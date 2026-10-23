@@ -1,0 +1,125 @@
+{
+  "profile": {
+    "id": "priya-demo",
+    "name": "Priya",
+    "pinHash": "demo",
+    "salt": "demo",
+    "createdAt": "2026-10-12T09:00:00.000Z",
+    "vault": [
+      {
+        "publicId": "demo/priya-1",
+        "uploadedAt": "2026-10-12T09:14:00.000Z",
+        "sha256": "02b3302b037b638ed0098b589f1f54d418aba657dd68e8be5119d732a87435f9",
+        "width": 1024,
+        "height": 1024,
+        "faces": [
+          [
+            312,
+            190,
+            400,
+            500
+          ]
+        ],
+        "quality": 0.92,
+        "prints": {
+          "full": {
+            "phash": "196d3228cf8bcc9a",
+            "dhash": "6996b23332b2f0e8"
+          },
+          "fullMirror": {
+            "phash": "0c3867299a9a99cf",
+            "dhash": "6996b23332b2f0e8"
+          },
+          "face": {
+            "phash": "4b613c3661d3969c",
+            "dhash": "8e31f0cc69697132"
+          },
+          "faceMirror": {
+            "phash": "1e3469733496c3c9",
+            "dhash": "8e31f0c469697132"
+          }
+        }
+      },
+      {
+        "publicId": "demo/priya-2",
+        "uploadedAt": "2026-10-15T18:02:00.000Z",
+        "sha256": "7e586dc2ac165f33516828bebe71a003ef892e973ed4c521d2ef5a29030700d7",
+        "width": 1024,
+        "height": 1024,
+        "faces": [
+          [
+            312,
+            190,
+            400,
+            500
+          ]
+        ],
+        "quality": 0.9,
+        "prints": {
+          "full": {
+            "phash": "0c213369c66ed99b",
+            "dhash": "6194b23333b2f0e8"
+          },
+          "fullMirror": {
+            "phash": "5924663c933b8cce",
+            "dhash": "6194b23333b2f0e8"
+          },
+          "face": {
+            "phash": "4b603cf2e1969699",
+            "dhash": "d433716969697133"
+          },
+          "faceMirror": {
+            "phash": "1e3169a3b4c3c3cc",
+            "dhash": "d433716969697133"
+          }
+        }
+      }
+    ]
+  },
+  "case": {
+    "id": "demo-case",
+    "profileId": "priya-demo",
+    "createdAt": "2026-10-23T20:41:00.000Z",
+    "platform": "Instagram",
+    "postUrl": "https://instagram.com/p/C7xk2demo",
+    "exhibitPublicId": "demo/exhibit",
+    "exhibitSha256": "02481da775fb97f1a0f822af13b6db1eff38acf1bb2ba288890d209ef59d9aa7",
+    "exhibitFaces": [
+      [
+        290,
+        154,
+        444,
+        555
+      ]
+    ],
+    "explicit": false,
+    "match": {
+      "verdict": "derived",
+      "score": 0.8218749999999999,
+      "bestIndex": 0,
+      "parts": {
+        "cloudinary-phash": 0.625,
+        "face-phash": 0.84375,
+        "face-dhash": 0.953125
+      },
+      "mirrored": true,
+      "methods": [
+        "cloudinary-phash",
+        "face-phash",
+        "face-dhash"
+      ]
+    },
+    "matchedPhoto": {
+      "publicId": "demo/priya-1",
+      "uploadedAt": "2026-10-12T09:14:00.000Z"
+    }
+  },
+  "drafts": {
+    "description": "The image is a cropped, mirrored and recoloured copy of your registered photo from 12 Oct 2026, with a caption added across the bottom. The face region matches your photo closely; the rest of the frame has been tinted and rotated to look like a new picture.",
+    "platform": "To: Grievance Officer, Instagram\nSubject: Removal of non-consensual synthetically altered image, Kavach case demo-case\n\nI am Priya. A manipulated image of me is being circulated on Instagram. I first saw it on 2026-10-23.\nURL of the content: https://instagram.com/p/C7xk2demo\nSHA-256 of the image as received: 02481da775fb97f1a0f822af13b6db1eff38acf1bb2ba288890d209ef59d9aa7\n\nPerceptual fingerprint comparison shows the image was made from my own photograph, registered with Kavach on 2026-10-12, with 82% similarity (methods: cloudinary-phash, face-phash, face-dhash). The image was altered without my consent.\n\nUnder the Information Technology (Intermediary Guidelines and Digital Media Ethics Code) Rules, 2021, as amended on 10 February 2026, you are required to remove or disable access to non-consensual synthetically generated or altered intimate and morphed imagery within 2 hours of receiving this complaint. This is punishable under Section 66E (violation of privacy) and Section 67 (publishing obscene material) of the Information Technology Act, 2000, and under the Bharatiya Nyaya Sanhita, 2023 provisions on criminal intimidation and defamation.\n\nI request that you:\n1. Remove the content and all copies within 2 hours of this complaint.\n2. Preserve the uploader's account details, IP logs and upload metadata for law enforcement.\n3. Confirm the action taken in writing to me, with a reference number.\n\nA Kavach evidence record (fingerprint comparison, hashes and timestamps) is available on request and has been attached to my complaint on the National Cyber Crime Reporting Portal.\n\nPriya\nDate: 2026-10-23\n\nVerify section numbers with the portal or a lawyer before filing.",
+    "portal": "Incident report for the National Cyber Crime Reporting Portal (cybercrime.gov.in)\nCategory: Women/Child related crime, morphed or sexually explicit content\nKavach case: demo-case\n\nComplainant: Priya\nPlatform: Instagram\nURL of the content: https://instagram.com/p/C7xk2demo\nDate first seen: 2026-10-23\nSHA-256 of the image as received: 02481da775fb97f1a0f822af13b6db1eff38acf1bb2ba288890d209ef59d9aa7\n\nDescription of the incident:\nA manipulated image of me has been created and circulated on Instagram without my consent. Perceptual fingerprint comparison shows the image was made from my own photograph, registered with Kavach on 2026-10-12, with 82% similarity (methods: cloudinary-phash, face-phash, face-dhash). The image was altered without my consent.\n\nThis is punishable under Section 66E (violation of privacy) and Section 67 (publishing obscene material) of the Information Technology Act, 2000, and under the Bharatiya Nyaya Sanhita, 2023 provisions on criminal intimidation and defamation.\n\nEvidence attached: the blurred exhibit stamped with the case id, hash and timestamp; the Kavach fingerprint comparison record; a screenshot of the post.\n\nRelief sought: immediate removal of the content, identification of the person who created and circulated it, and registration of an FIR.\n\nI have also raised a complaint with the platform's grievance officer under the 2-hour removal duty. Helpline 1930 was informed.\n\nPriya\nDate: 2026-10-23\n\nVerify section numbers with the portal or a lawyer before filing.",
+    "severity": "high",
+    "provider": "demo",
+    "fallback": false
+  }
+}

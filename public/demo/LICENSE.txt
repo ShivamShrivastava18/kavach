@@ -1,0 +1,1 @@
+The portraits and exhibit in this folder are generated vector art made by scripts/make-seed.ts. They depict no real person. CC0 1.0 Universal.

@@ -32,7 +32,7 @@ function scoreSides(s: Side, c: Side): { score: number; parts: Record<string, nu
     parts["cloudinary-phash"] = cld;
     parts["face-phash"] = similarity(s.face.phash, c.face.phash);
     parts["face-dhash"] = similarity(s.face.dhash, c.face.dhash);
-    return { score: 0.4 * cld + 0.35 * parts["face-phash"] + 0.25 * parts["face-dhash"], parts };
+    return { score: 0.25 * cld + 0.45 * parts["face-phash"] + 0.3 * parts["face-dhash"], parts };
   }
   parts["full-phash"] = similarity(s.full.phash, c.full.phash);
   parts["full-dhash"] = similarity(s.full.dhash, c.full.dhash);
