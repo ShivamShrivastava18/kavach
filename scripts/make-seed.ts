@@ -139,7 +139,7 @@ async function main() {
   });
   const drafts: Drafts = {
     description:
-      "The image is a cropped, mirrored and recoloured copy of your registered photo from 12 Oct 2026, with a caption added across the bottom. The face region matches your photo closely; the rest of the frame has been tinted and rotated to look like a new picture.",
+      "The image is a cropped, mirrored and recoloured copy of your registered photo from 12 Oct 2026, with a caption added across the bottom. The face region matches your photo closely; the rest of the frame has been tinted pink to look like a new picture.",
     platform: t.platform,
     portal: t.portal,
     severity: "high",
