@@ -16,6 +16,7 @@ export function caseView(c: CaseRecord) {
     exhibitSha256: c.exhibitSha256,
     exhibitFaces: c.exhibitFaces.length,
     explicit: c.explicit,
+    moderated: c.moderated ?? true,
     match: c.match,
     matchedPhoto: c.matchedPhoto,
     drafts: c.drafts,

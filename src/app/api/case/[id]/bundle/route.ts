@@ -38,6 +38,7 @@ export async function GET(_req: Request, ctx: { params: Promise<{ id: string }> 
       sha256_of_original_as_received: c.exhibitSha256,
       faces_detected: c.exhibitFaces.length,
       explicit_content_flagged: c.explicit,
+      explicit_content_screened: c.moderated ?? true,
       moderation: c.moderation ?? null,
       note: "The original is held in private storage and is never included in this bundle. It can be released to law enforcement by the complainant.",
     },

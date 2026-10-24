@@ -34,12 +34,13 @@ export async function draftComplaint(input: DraftInput): Promise<DraftOutput> {
     const result = provider === "claude" ? await claudeProvider(prompt, images) : await gemmaProvider(prompt, images, textOnlyPrompt);
     const parsed = parseDraft(result.raw);
     if (!parsed) throw new Error(`unparseable response from ${result.model}`);
-    const valid = validateDraft(parsed);
+    // Restore the name and URL first: the model is told to keep the placeholders, validation then
+    // catches only the ones it mangled (which restore could not fill).
+    const valid = validateDraft({ ...parsed, description: restore(parsed.description, facts), narrative: restore(parsed.narrative, facts) });
     if (!valid) throw new Error(`draft from ${result.model} failed validation`);
-    const narrative = restore(valid.narrative, facts);
-    const complaints = fillTemplates(input.facts, narrative);
+    const complaints = fillTemplates(input.facts, valid.narrative);
     return {
-      description: restore(valid.description, facts),
+      description: valid.description,
       platform: complaints.platform,
       portal: complaints.portal,
       severity: valid.severity,

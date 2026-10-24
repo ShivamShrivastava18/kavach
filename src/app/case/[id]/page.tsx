@@ -118,6 +118,7 @@ export default function CasePage({ params }: { params: Promise<{ id: string }> }
           </span>
         ))}
         {c.explicit && <span className="chip border-danger text-danger">flagged explicit</span>}
+        {c.moderated === false && <span className="chip" title="The moderation add-on's monthly quota is spent; explicit-content flagging was skipped for this case.">not screened for explicit content</span>}
         <span className="chip">{c.platform}</span>
       </div>
 

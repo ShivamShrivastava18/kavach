@@ -42,6 +42,8 @@ export type CaseRecord = {
   exhibitFaces: number[][];
   explicit: boolean;
   moderation?: unknown;
+  /** False when the moderation add-on was requested but unavailable (quota), so `explicit` is unknown rather than false. */
+  moderated?: boolean;
   match: MatchResult;
   matchedPhoto?: { publicId: string; uploadedAt: string };
   drafts?: Drafts;

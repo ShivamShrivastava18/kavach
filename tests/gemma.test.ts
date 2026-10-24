@@ -1,5 +1,5 @@
 import { test, expect } from "vitest";
-import { gemmaProvider, GEMMA_MODEL } from "@/lib/llm/gemma";
+import { gemmaProvider, gemmaConfig, GEMMA_MODEL } from "@/lib/llm/gemma";
 
 const img = [Buffer.from("png")];
 
@@ -58,4 +58,10 @@ test("every call gets the budget that is left", async () => {
   });
   expect(timeouts[0]).toBe(48_000);
   expect(timeouts[1]).toBe(46_000);
+});
+
+test("the SDK config turns thinking down to minimal and passes the timeout", () => {
+  const c = gemmaConfig(12_345);
+  expect(c.thinkingConfig).toEqual({ thinkingLevel: "MINIMAL" }); // ThinkingLevel.MINIMAL, sent as "minimal" on the wire
+  expect(c.httpOptions).toEqual({ timeout: 12_345 });
 });

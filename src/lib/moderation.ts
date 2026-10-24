@@ -19,3 +19,8 @@ export function isExplicit(moderation: unknown): boolean {
     }),
   );
 }
+
+/** The add-on's own quota ("Limit of N Rekognition AI Moderation operations reached"), not a general API limit. */
+export function isModerationQuotaError(e: unknown): boolean {
+  return /moderation operations reached|rekognition.*(limit|quota)/i.test(String((e as Error)?.message ?? e));
+}

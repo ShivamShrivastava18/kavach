@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { createHash } from "node:crypto";
 import { currentProfile, fail, readImageField } from "@/lib/api";
 import { uploadPrivate } from "@/lib/cloudinary";
-import { isExplicit, MODERATION_PARAM } from "@/lib/moderation";
+import { isExplicit, isModerationQuotaError, MODERATION_PARAM } from "@/lib/moderation";
 import { isDemoMode } from "@/lib/env";
 import { bestMatch } from "@/lib/match";
 import { computePrints } from "@/lib/prints";
@@ -32,8 +32,17 @@ export async function POST(req: Request) {
   const sha256 = createHash("sha256").update(img.buf).digest("hex");
   const moderation = process.env.CLOUDINARY_MODERATION === "1" ? MODERATION_PARAM : undefined;
   let up;
+  let moderated = Boolean(moderation);
   try {
-    up = await uploadPrivate(img.buf, `kavach/${profile.id}/exhibits`, { moderation, publicId: caseId });
+    try {
+      up = await uploadPrivate(img.buf, `kavach/${profile.id}/exhibits`, { moderation, publicId: caseId });
+    } catch (e) {
+      if (!moderation || !isModerationQuotaError(e)) throw e;
+      // The free Rekognition quota is spent: store the exhibit anyway, unmoderated, and say so on the case.
+      console.warn("[kavach] moderation quota exhausted, storing exhibit without moderation");
+      moderated = false;
+      up = await uploadPrivate(img.buf, `kavach/${profile.id}/exhibits`, { publicId: caseId });
+    }
   } catch (e) {
     console.error("[kavach] exhibit upload failed:", (e as Error).message);
     return fail(502, "Storage is not responding. Try again in a moment.");
@@ -53,6 +62,7 @@ export async function POST(req: Request) {
     exhibitFaces: up.faces,
     explicit: isExplicit(up.moderation),
     moderation: up.moderation,
+    moderated,
     match,
     matchedPhoto: matched ? { publicId: matched.publicId, uploadedAt: matched.uploadedAt } : undefined,
   };

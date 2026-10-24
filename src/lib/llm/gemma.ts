@@ -1,13 +1,22 @@
-import { GoogleGenAI } from "@google/genai";
+import { GoogleGenAI, ThinkingLevel } from "@google/genai";
 import { required } from "../env";
 import type { ProviderResult } from "./types";
 
-// Measured 24 Oct 2026: gemma-4-26b-a4b-it thinks for 400 to 1500 tokens before answering (25 to 35 s for a short
-// JSON answer) and its image path returns an opaque 500 now and then. gemma-4-31b-it timed out on "OK", so it is not used.
+// Measured 24 Oct 2026: gemma-4-26b-a4b-it answers in about 4 s once thinking is set to minimal, and its image
+// path returns an opaque 500 now and then. gemma-4-31b-it timed out on "OK", so it is not used.
 export const GEMMA_MODEL = "gemma-4-26b-a4b-it";
 const TOTAL_BUDGET_MS = 48_000;
 const MIN_ATTEMPT_MS = 8_000;
 const FAST_FAILURE_MS = 5_000;
+
+/**
+ * Gemma 4 thinks by default and the thoughts take 25 to 60 s on this prompt, past the API's own deadline.
+ * thinkingLevel "minimal" is the only thinking control the model accepts (budget and "low" are rejected)
+ * and brings the same answer back in about 4 s with zero thought tokens (probe, 24 Oct 2026).
+ */
+export function gemmaConfig(timeoutMs: number) {
+  return { temperature: 0.3, maxOutputTokens: 4096, thinkingConfig: { thinkingLevel: ThinkingLevel.MINIMAL }, httpOptions: { timeout: timeoutMs } };
+}
 
 export type GemmaCall = (model: string, prompt: string, images: Buffer[], timeoutMs: number) => Promise<string>;
 type Deps = { call?: GemmaCall; now?: () => number };
@@ -18,12 +27,7 @@ const sdkCall: GemmaCall = async (model, prompt, images, timeoutMs) => {
     ...images.map((b) => ({ inlineData: { mimeType: "image/png", data: b.toString("base64") } })),
     { text: prompt },
   ];
-  const res = await ai.models.generateContent({
-    model,
-    contents: [{ role: "user", parts }],
-    // Thought tokens count against maxOutputTokens, so leave room.
-    config: { temperature: 0.3, maxOutputTokens: 8192, httpOptions: { timeout: timeoutMs } },
-  });
+  const res = await ai.models.generateContent({ model, contents: [{ role: "user", parts }], config: gemmaConfig(timeoutMs) });
   const text = res.text;
   if (!text) throw new Error(`empty response from ${model} (${res.candidates?.[0]?.finishReason ?? "no candidate"})`);
   return text;

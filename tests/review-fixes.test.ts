@@ -79,3 +79,11 @@ test("readImageField accepts a real png", async () => {
   const r = await readImageField(fd);
   expect("buf" in r).toBe(true);
 });
+
+// The Rekognition add-on has a monthly quota on the free plan; exhausting it must not stop a check.
+test("isModerationQuotaError recognises the add-on quota message and nothing else", async () => {
+  const { isModerationQuotaError } = await import("@/lib/moderation");
+  expect(isModerationQuotaError(new Error("Rate Limit Exceeded. Limit of 50 Rekognition AI Moderation operations reached. Try again on the next monthly billing usage date."))).toBe(true);
+  expect(isModerationQuotaError(new Error("Rate Limit Exceeded. Limit of 500 API requests reached."))).toBe(false);
+  expect(isModerationQuotaError(new Error("socket hang up"))).toBe(false);
+});

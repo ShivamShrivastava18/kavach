@@ -11,7 +11,6 @@ export function redact(text: string, facts: RedactFacts): string {
 }
 
 export function restore(text: string, facts: RedactFacts): string {
-  let out = text.split(NAME_TOKEN).join(facts.name);
-  if (facts.url) out = out.split(URL_TOKEN).join(facts.url);
-  return out;
+  const out = text.split(NAME_TOKEN).join(facts.name);
+  return out.split(URL_TOKEN).join(facts.url ?? "the post");
 }

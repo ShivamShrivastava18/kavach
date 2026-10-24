@@ -66,8 +66,9 @@ async function main() {
   ok(img.status === 200 || img.status === 307, `blurred exhibit delivered (${img.status}, ${img.headers.get("content-type")})`);
 
   const dr = await call(`/api/case/${caseId}/draft`, { method: "POST" });
-  const drBody = (await dr.json()) as { drafts?: { provider: string; fallback: boolean; platform: string } };
-  ok(dr.ok && drBody.drafts, `drafts provider=${drBody.drafts?.provider} fallback=${drBody.drafts?.fallback}`);
+  const drBody = (await dr.json()) as { drafts?: { provider: string; fallback: boolean; platform: string; description: string; textOnly?: boolean } };
+  ok(dr.ok && drBody.drafts, `drafts provider=${drBody.drafts?.provider} fallback=${drBody.drafts?.fallback}${drBody.drafts?.textOnly ? " text-only" : ""}`);
+  console.log("     description:", drBody.drafts?.description.slice(0, 220));
   ok(drBody.drafts?.platform.includes("2 hours"), "platform draft cites the 2-hour duty");
 
   const bundle = await call(`/api/case/${caseId}/bundle`);

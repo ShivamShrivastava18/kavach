@@ -16,3 +16,7 @@ test("restore inverts redact", () => {
 test("redact without url leaves text intact", () => {
   expect(redact("hello Priya Sharma", { name: "Priya Sharma" })).toBe("hello [VICTIM_NAME]");
 });
+
+test("restore without a URL replaces the token with plain words", () => {
+  expect(restore("see [POST_URL] by [VICTIM_NAME]", { name: "Priya Sharma" })).toBe("see the post by Priya Sharma");
+});
