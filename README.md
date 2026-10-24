@@ -1,5 +1,7 @@
 # Kavach
 
+Live: https://kavach-flame-gamma.vercel.app
+
 **A photo shield for women.** Kavach proves a morphed image was made from your own photo, blurs it so you never have to look at it clear, and writes the two complaints that get it taken down: one for the platform, citing the 2-hour removal duty under the IT Rules as amended on 10 Feb 2026, and one for the National Cyber Crime Reporting Portal.
 
 Built in one night for SheBuilds Hacktoberfest HackDays 2026. Cloudinary does the heavy lifting. Gemma 4 writes the complaints. The fingerprinting is open source and lives in this repo.
@@ -49,7 +51,7 @@ Two-phase check: upload and match return at once; the Gemma draft runs in a seco
 
 ## Gemma 4
 
-Gemma 4 (`gemma-4-26b-a4b-it`, falling back to `gemma-4-31b-it`) receives the blurred, stamped exhibit, a blurred thumbnail of the matched vault photo, and the structured evidence as JSON. It never sees an unblurred face. Because the Gemini free tier may use inputs for training, the victim's name and the post link are replaced with `[VICTIM_NAME]` and `[POST_URL]` before the call and restored after. It rewrites two template complaints and returns JSON; a tolerant parser handles fences and prose, and any failure falls back to the template text with a visible badge.
+Gemma 4 (`gemma-4-26b-a4b-it` on the Gemini API free tier) receives the blurred, stamped exhibit and the structured evidence as JSON. It never sees an unblurred face. Because the free tier may use inputs for training, the victim's name and the post link are replaced with `[VICTIM_NAME]` and `[POST_URL]` before the call and restored after. It writes what only a model can write: a plain-language description for the victim, a first-person narrative for the complaint body, and a severity. The legal complaints are templated around that narrative, so hashes, dates and section numbers never depend on the model. Two lanes run in parallel, one with the image and one text-only, and the first valid answer wins (the image path returns an opaque 500 now and then); thinking is set to minimal, which turned a 25 to 60 second answer into 4 seconds. Any failure falls back to the template text with a visible badge. `gemma-4-31b-it` was tried and dropped: it timed out on a one-word prompt.
 
 `LLM_PROVIDER=gemma|claude|demo` switches providers. Claude (`claude-haiku-5-5`) is wired as a fallback only.
 
@@ -61,7 +63,7 @@ cp .env.example .env     # fill in CLOUDINARY_URL, GEMINI_API_KEY, SESSION_SECRE
 npm run dev
 ```
 
-In the Cloudinary console, enable the **Amazon Rekognition AI Moderation** add-on (free tier) and set `CLOUDINARY_MODERATION=1`. Without it, moderation is skipped and the complaint uses the non-explicit sections.
+In the Cloudinary console, enable the **Amazon Rekognition AI Moderation** add-on (free tier, 50 operations a month) and set `CLOUDINARY_MODERATION=1`. Without it, or once the monthly quota is spent, the exhibit is stored unmoderated, the case shows "not screened for explicit content", and the complaint uses the non-explicit sections.
 
 Demo mode: leave `CLOUDINARY_URL` empty or set `DEMO_MODE=1`. You get Priya's seeded shield, her two portraits, the morphed exhibit and a precomputed case. Uploads are disabled. The seed images are generated vector art (`scripts/make-seed.ts`) and depict no real person.
 

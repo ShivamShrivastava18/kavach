@@ -77,6 +77,11 @@ async function main() {
   const other = await fetch(`${base}/api/case/${caseId}`);
   ok(other.status === 401, "case refused without session");
 
+  if (live && !profBody.demo) {
+    const del = await call("/api/profile", { method: "DELETE" });
+    ok(del.ok, "smoke shield deleted");
+  }
+
   console.log(`done in ${((Date.now() - t0) / 1000).toFixed(1)}s`);
 }
 
