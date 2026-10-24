@@ -12,3 +12,11 @@ Timestamps are IST (UTC+5:30). This log is pasted into the Notion build-in-publi
 - 23:20 Caveat recorded: two different flat vector portraits score 0.80 against each other because they share a template. Real photographs differ far more. A higher-resolution face hash is on the list for tomorrow if time allows.
 - 23:25 Bug: sharp applies only the last `.resize()` in a chain, so the "pixelated" face in the seed exhibit was pasted sharp. Split into two pipelines. Lesson: look at every generated image.
 - 23:25 Seed exhibit is crop 90%, mirror, pink tint, caption. Scores 0.82, derived, mirrored detected.
+- 23:40 Routes done. Next 16 with cacheComponents rejects `export const runtime`, and later rejected `use(params)` in a client page; dropped cacheComponents from the config, nothing needed it.
+- 23:50 Gemma wiring. Gemma on the Gemini API has no system role, so the rules go in the user turn. Parser tolerates fences and prose. If the chosen provider has no key the template text is used with a visible "Template text" badge, not an error.
+
+## 24 Oct 2026
+
+- 00:00 Interface. Tailwind v4 refused `@apply btn` inside another class and silently dropped the whole stylesheet; the page rendered unstyled white. Custom classes cannot be applied, so the shared button rules are one selector list instead.
+- 00:05 Verified in the browser at 1280 and 375 px: home, vault with Priya's two portraits, case page with the pixelated, stamped exhibit beside the matched photo, template drafts with copy and download. Production build clean.
+- 00:10 README written. Push to GitHub. Vercel deploy waits on `vercel login` and the `.env` keys.
