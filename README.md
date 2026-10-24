@@ -66,7 +66,7 @@ In the Cloudinary console, enable the **Amazon Rekognition AI Moderation** add-o
 Demo mode: leave `CLOUDINARY_URL` empty or set `DEMO_MODE=1`. You get Priya's seeded shield, her two portraits, the morphed exhibit and a precomputed case. Uploads are disabled. The seed images are generated vector art (`scripts/make-seed.ts`) and depict no real person.
 
 ```bash
-npm test                 # 48 unit tests: fingerprints, matching, session, redaction, templates, parser
+npm test                 # 42 unit tests: fingerprints, matching, session, redaction, templates, parser
 npx tsx scripts/cld-smoke.ts   # round-trips an image and a JSON record through your Cloudinary account
 npx tsx scripts/dev/calib.ts   # prints match scores for common morph transformations
 ```
