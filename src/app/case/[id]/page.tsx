@@ -30,6 +30,19 @@ export default function CasePage({ params }: { params: Promise<{ id: string }> }
   const [data, setData] = useState<{ case: CaseView; victimName: string } | null | undefined>(undefined);
   const [drafts, setDrafts] = useState<Drafts | null>(null);
   const [draftError, setDraftError] = useState<string | null>(null);
+  const [originalMsg, setOriginalMsg] = useState<string | null>(null);
+
+  async function releaseOriginal() {
+    if (!window.confirm("This opens a 10-minute link to the unblurred original, for attaching to a police complaint only. Continue?")) return;
+    const r = await fetch(`/api/case/${id}/original`, { method: "POST" }).catch(() => null);
+    const body = (await r?.json().catch(() => ({}))) as { url?: string; error?: string } | undefined;
+    if (!r || !r.ok || !body?.url) {
+      setOriginalMsg(body?.error ?? "Could not create the link.");
+      return;
+    }
+    window.open(body.url, "_blank", "noopener");
+    setOriginalMsg("Link opened in a new tab. It expires in 10 minutes.");
+  }
 
   useEffect(() => {
     let cancelled = false;
@@ -169,6 +182,16 @@ export default function CasePage({ params }: { params: Promise<{ id: string }> }
                 <span className="text-fg">Call 1930</span> if money or threats are involved.
               </li>
             </ol>
+            <div className="mt-6 flex flex-wrap gap-2">
+              <a href={`/api/case/${c.id}/bundle`} className="btn-ghost px-4 py-2">
+                Download evidence bundle
+              </a>
+              <button onClick={releaseOriginal} className="btn-ghost px-4 py-2 text-muted">
+                Release original for police
+              </button>
+            </div>
+            {originalMsg && <p className="mt-2 text-xs text-muted">{originalMsg}</p>}
+            <p className="mt-2 text-xs text-muted">The bundle holds the evidence record, the stamped blurred exhibit and both drafts. The original stays in private storage.</p>
           </div>
         </div>
         <div>

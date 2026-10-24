@@ -69,6 +69,7 @@ Demo mode: leave `CLOUDINARY_URL` empty or set `DEMO_MODE=1`. You get Priya's se
 npm test                 # 47 unit tests: fingerprints, matching, session, redaction, templates, parser
 npx tsx scripts/cld-smoke.ts   # round-trips an image and a JSON record through your Cloudinary account
 npx tsx scripts/dev/calib.ts   # prints match scores for common morph transformations
+npx tsx scripts/smoke.ts http://localhost:3000   # end-to-end flow against a running Kavach (LIVE=1 to upload for real)
 ```
 
 ## How the match is scored
@@ -82,7 +83,8 @@ Three 64-bit hashes: Cloudinary pHash on the full image, Kavach pHash and dHash 
 - `src/lib/cloudinary.ts` private uploads, signed derivatives, raw JSON store, expiring downloads
 - `src/lib/llm/` Gemma, Claude and demo providers, prompt, tolerant parser
 - `src/lib/templates.ts` the two complaint templates and their legal references
-- `src/app/api/` profile, vault, check, case, draft, image proxy
+- `src/app/api/` profile, vault, check, case, draft, bundle, original, image proxy
+- `docs/judging-evidence.md` criteria to evidence; `docs/legal-sources.md` every legal reference with its source
 - `docs/superpowers/specs/` the design; `docs/superpowers/plans/` the build plan; `docs/build-journey.md` the log
 
 ## Licence

@@ -34,9 +34,9 @@ function derivation(f: CaseFacts): string {
 
 function sections(f: CaseFacts): string {
   if (f.explicit) {
-    return `This constitutes non-consensual intimate imagery. It is punishable under Section 66E (violation of privacy), Section 67 and Section 67A (publishing sexually explicit material) of the Information Technology Act, 2000, and under the Bharatiya Nyaya Sanhita, 2023 provisions on voyeurism and criminal intimidation.`;
+    return `This constitutes non-consensual intimate imagery. It is punishable under Section 66E (violation of privacy), Section 67 and Section 67A (publishing sexually explicit material) of the Information Technology Act, 2000, and under Section 77 (voyeurism, including dissemination of images without consent) and Section 351 (criminal intimidation) of the Bharatiya Nyaya Sanhita, 2023.`;
   }
-  return `This is punishable under Section 66E (violation of privacy) and Section 67 (publishing obscene material) of the Information Technology Act, 2000, and under the Bharatiya Nyaya Sanhita, 2023 provisions on criminal intimidation and defamation.`;
+  return `This is punishable under Section 66E (violation of privacy) and Section 67 (publishing obscene material) of the Information Technology Act, 2000, and under Section 351 (criminal intimidation) and Section 356 (defamation) of the Bharatiya Nyaya Sanhita, 2023.`;
 }
 
 export function fillTemplates(f: CaseFacts): { platform: string; portal: string } {
@@ -49,7 +49,7 @@ ${url}SHA-256 of the image as received: ${f.exhibitSha256}
 
 ${derivation(f)}
 
-Under the Information Technology (Intermediary Guidelines and Digital Media Ethics Code) Rules, 2021, as amended on 10 February 2026, you are required to remove or disable access to non-consensual synthetically generated or altered intimate and morphed imagery within 2 hours of receiving this complaint. ${sections(f)}
+Under Rule 3(2)(b) of the Information Technology (Intermediary Guidelines and Digital Media Ethics Code) Rules, 2021, as amended on 10 February 2026 and in force from 20 February 2026, you are required to remove or disable access to non-consensual synthetically generated or altered intimate and morphed imagery within 2 hours of receiving this complaint. ${sections(f)}
 
 I request that you:
 1. Remove the content and all copies within 2 hours of this complaint.
