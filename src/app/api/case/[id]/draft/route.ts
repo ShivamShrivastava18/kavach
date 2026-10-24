@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { readFileSync } from "node:fs";
 import path from "node:path";
 import { currentProfile, fail } from "@/lib/api";
-import { blurPngTransformation, blurThumbTransformation, derivedBuffer } from "@/lib/cloudinary";
+import { blurPngTransformation, derivedBuffer } from "@/lib/cloudinary";
 import { isDemoMode } from "@/lib/env";
 import { draftComplaint } from "@/lib/llm";
 import { getCase, saveCase } from "@/lib/store";
@@ -39,10 +39,8 @@ export async function POST(req: Request, ctx: { params: Promise<{ id: string }> 
   const templates = fillTemplates(facts);
 
   let exhibitBlurPng: Buffer;
-  let matchedBlurPng: Buffer | undefined;
   if (isDemoMode()) {
     exhibitBlurPng = demoFile("exhibit-blurred.png");
-    matchedBlurPng = demoFile("priya-1-blurred.png");
   } else {
     try {
       exhibitBlurPng = await derivedBuffer(c.exhibitPublicId, blurPngTransformation({ caseId: c.id, sha256: c.exhibitSha256, at: c.createdAt }));
@@ -50,12 +48,8 @@ export async function POST(req: Request, ctx: { params: Promise<{ id: string }> 
       console.error("[kavach] blurred exhibit fetch failed:", (e as Error).message);
       return fail(502, "Could not fetch the blurred exhibit. Reload to try again.");
     }
-    if (c.matchedPhoto && c.match.verdict !== "none") {
-      matchedBlurPng = await derivedBuffer(c.matchedPhoto.publicId, blurThumbTransformation() + "/f_png").catch(() => undefined);
-    }
   }
-
-  const drafts = await draftComplaint({ facts, templates, exhibitBlurPng, matchedBlurPng });
+  const drafts = await draftComplaint({ facts, templates, exhibitBlurPng });
   c.drafts = drafts;
   await saveCase(c);
   return NextResponse.json({ drafts });

@@ -14,11 +14,11 @@ test("no faces means no face prints", async () => {
   expect(p.face).toBeUndefined();
   expect(p.faceMirror).toBeUndefined();
   expect(p.cldPhash).toBe("abcdef0123456789");
-  expect(p.full.phash).toMatch(/^[0-9a-f]{16}$/);
+  expect(p.full.phash).toMatch(/^[0-9a-f]{64}$/);
 });
 
 test("a face box yields face prints", async () => {
   const p = await computePrints(await img(), [[50, 40, 100, 100]]);
-  expect(p.face?.phash).toMatch(/^[0-9a-f]{16}$/);
-  expect(p.faceMirror?.dhash).toMatch(/^[0-9a-f]{16}$/);
+  expect(p.face?.phash).toMatch(/^[0-9a-f]{64}$/);
+  expect(p.faceMirror?.dhash).toMatch(/^[0-9a-f]{64}$/);
 });

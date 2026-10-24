@@ -9,9 +9,10 @@ export type DraftInput = {
 
 export type Severity = "low" | "medium" | "high";
 
-export type ParsedDraft = { description: string; platform: string; portal: string; severity: Severity };
+/** What the model writes: the plain-language parts. The legal complaints are templated around them. */
+export type ParsedDraft = { description: string; narrative: string; severity: Severity };
 
-export type DraftOutput = ParsedDraft & { provider: string; fallback: boolean; textOnly?: boolean };
+export type DraftOutput = { description: string; platform: string; portal: string; severity: Severity; provider: string; fallback: boolean; textOnly?: boolean };
 
 export type ProviderResult = { raw: string; model: string; textOnly?: boolean };
 

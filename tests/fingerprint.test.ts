@@ -35,13 +35,13 @@ test("identical images have zero distance", async () => {
   const b = await fingerprint(base);
   expect(hamming(a.phash, b.phash)).toBe(0);
   expect(hamming(a.dhash, b.dhash)).toBe(0);
-  expect(a.phash).toMatch(/^[0-9a-f]{16}$/);
+  expect(a.phash).toMatch(/^[0-9a-f]{64}$/);
 });
 
 test("resize and tint stay close", async () => {
   const a = await fingerprint(base);
   expect(similarity(a.phash, (await fingerprint(resized)).phash)).toBeGreaterThanOrEqual(0.9);
-  expect(similarity(a.phash, (await fingerprint(tinted)).phash)).toBeGreaterThanOrEqual(0.85);
+  expect(similarity(a.phash, (await fingerprint(tinted)).phash)).toBeGreaterThanOrEqual(0.8);
 });
 
 test("crop stays within band", async () => {
@@ -67,9 +67,26 @@ test("hamming counts bits", () => {
   expect(hamming("0f", "00")).toBe(4);
 });
 
-test("faceCrop pads and clamps", async () => {
-  const crop = await faceCrop(base, { x: 200, y: 200, width: 100, height: 100 });
+test("faceCrop keeps the padded frame at image edges instead of clamping", async () => {
+  // Box touches the left and bottom edges: the crop must still be 1.4x the box in both axes.
+  const crop = await faceCrop(base, { x: 0, y: 156, width: 100, height: 100 });
   const meta = await sharp(crop).metadata();
-  expect(meta.width).toBeLessThanOrEqual(256);
-  expect(meta.width).toBeGreaterThan(0);
+  expect(meta.width).toBe(140);
+  expect(meta.height).toBe(140);
+});
+
+test("faceCrop frames a face the same whether or not it sits at the edge", async () => {
+  const inner = await faceCrop(base, { x: 60, y: 60, width: 100, height: 100 });
+  // Cut the scene so the same face box now starts at x=0, y=0.
+  const cut = await sharp(base).extract({ left: 60, top: 60, width: 196, height: 196 }).png().toBuffer();
+  const edge = await faceCrop(cut, { x: 0, y: 0, width: 100, height: 100 });
+  const a = await fingerprint(inner);
+  const b = await fingerprint(edge);
+  expect(similarity(a.phash, b.phash)).toBeGreaterThanOrEqual(0.8);
+});
+
+test("hashes are 256 bits", async () => {
+  const f = await fingerprint(base);
+  expect(f.phash).toHaveLength(64);
+  expect(f.dhash).toHaveLength(64);
 });

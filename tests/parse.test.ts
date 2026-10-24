@@ -3,16 +3,14 @@ import { parseDraft } from "@/lib/llm/parse";
 
 const obj = {
   description: "A cropped copy.",
-  platform_complaint: "To: Grievance Officer",
-  portal_complaint: "Incident report",
+  narrative: "On 23 October I found a cropped copy of my photo on Instagram.",
   severity: "high",
 };
 
 test("clean json", () => {
   expect(parseDraft(JSON.stringify(obj))).toEqual({
     description: "A cropped copy.",
-    platform: "To: Grievance Officer",
-    portal: "Incident report",
+    narrative: "On 23 October I found a cropped copy of my photo on Instagram.",
     severity: "high",
   });
 });
@@ -24,7 +22,7 @@ test("json inside fences", () => {
 
 test("prose then json", () => {
   const raw = "Here is the analysis you asked for:\n\n" + JSON.stringify(obj) + "\n\nLet me know.";
-  expect(parseDraft(raw)?.platform).toBe("To: Grievance Officer");
+  expect(parseDraft(raw)?.narrative).toBe(obj.narrative);
 });
 
 test("garbage is null", () => {

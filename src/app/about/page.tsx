@@ -1,6 +1,6 @@
 const ROWS: [string, string][] = [
   ["Private uploads", "Every photo and every exhibit is a Cloudinary private asset in a per-shield folder. Nothing has a public URL."],
-  ["pHash on upload", "Cloudinary returns a 64-bit perceptual hash the moment an image lands. It is the first of three fingerprints."],
+  ["pHash on upload", "Cloudinary returns a 64-bit perceptual hash the moment an image lands. It is the first of three fingerprints; the other two are 256-bit hashes of the face crop."],
   ["Face detection and g_face crops", "Cloudinary finds the face; Kavach fingerprints the face crop with its own open-source pHash and dHash, so crops, borders and captions elsewhere in the frame do not hide the match."],
   ["Mirror pass", "Every comparison is run twice, once against the mirrored suspect. Flipping a photo is the cheapest disguise there is."],
   ["Pixelate faces and blur", "The exhibit is only ever delivered through e_pixelate_faces and e_blur. You never see it clear, and neither does the model that drafts your complaint."],

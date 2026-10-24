@@ -39,8 +39,10 @@ function sections(f: CaseFacts): string {
   return `This is punishable under Section 66E (violation of privacy) and Section 67 (publishing obscene material) of the Information Technology Act, 2000, and under Section 351 (criminal intimidation) and Section 356 (defamation) of the Bharatiya Nyaya Sanhita, 2023.`;
 }
 
-export function fillTemplates(f: CaseFacts): { platform: string; portal: string } {
+/** Fills both complaints. A narrative (the victim's own account, written by the model) goes before the legal paragraph. */
+export function fillTemplates(f: CaseFacts, narrative?: string): { platform: string; portal: string } {
   const url = f.postUrl ? `URL of the content: ${f.postUrl}\n` : "";
+  const account = narrative?.trim() ? `${narrative.trim()}\n\n` : "";
   const platform = `To: Grievance Officer, ${f.platform}
 Subject: Removal of non-consensual synthetically altered image, Kavach case ${f.caseId}
 
@@ -49,7 +51,7 @@ ${url}SHA-256 of the image as received: ${f.exhibitSha256}
 
 ${derivation(f)}
 
-Under Rule 3(2)(b) of the Information Technology (Intermediary Guidelines and Digital Media Ethics Code) Rules, 2021, as amended on 10 February 2026 and in force from 20 February 2026, you are required to remove or disable access to non-consensual synthetically generated or altered intimate and morphed imagery within 2 hours of receiving this complaint. ${sections(f)}
+${account}Under Rule 3(2)(b) of the Information Technology (Intermediary Guidelines and Digital Media Ethics Code) Rules, 2021, as amended on 10 February 2026 and in force from 20 February 2026, you are required to remove or disable access to non-consensual synthetically generated or altered intimate and morphed imagery within 2 hours of receiving this complaint. ${sections(f)}
 
 I request that you:
 1. Remove the content and all copies within 2 hours of this complaint.
@@ -75,7 +77,7 @@ SHA-256 of the image as received: ${f.exhibitSha256}
 Description of the incident:
 A manipulated image of me has been created and circulated on ${f.platform} without my consent. ${derivation(f)}
 
-${sections(f)}
+${account}${sections(f)}
 
 Evidence attached: the blurred exhibit stamped with the case id, hash and timestamp; the Kavach fingerprint comparison record; a screenshot of the post.
 

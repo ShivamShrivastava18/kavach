@@ -21,7 +21,9 @@ export type MatchResult = {
   methods: string[];
 };
 
-export const THRESHOLDS = { derived: 0.8, likely: 0.6 } as const;
+// Calibrated on real portraits (scripts/morph-bench.ts, 24 Oct 2026): with 256-bit hashes a different person's
+// face scores 0.55 to 0.61 (random is 0.50), the same face after crop, screenshot, body swap or tilt scores 0.83 or more.
+export const THRESHOLDS = { derived: 0.8, likely: 0.7 } as const;
 
 type Side = { cldPhash?: string; full: Fingerprint; face?: Fingerprint };
 
@@ -32,7 +34,10 @@ function scoreSides(s: Side, c: Side): { score: number; parts: Record<string, nu
     parts["cloudinary-phash"] = cld;
     parts["face-phash"] = similarity(s.face.phash, c.face.phash);
     parts["face-dhash"] = similarity(s.face.dhash, c.face.dhash);
-    return { score: 0.25 * cld + 0.45 * parts["face-phash"] + 0.3 * parts["face-dhash"], parts };
+    // The face carries the evidence. The full-frame hash can only corroborate it: a morph puts the face
+    // into a new frame on purpose, so a different frame must not count against the match.
+    const face = 0.6 * parts["face-phash"] + 0.4 * parts["face-dhash"];
+    return { score: Math.max(face, 0.5 * face + 0.5 * cld), parts };
   }
   parts["full-phash"] = similarity(s.full.phash, c.full.phash);
   parts["full-dhash"] = similarity(s.full.dhash, c.full.dhash);

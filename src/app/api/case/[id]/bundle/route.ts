@@ -48,7 +48,7 @@ export async function GET(_req: Request, ctx: { params: Promise<{ id: string }> 
       methods: c.match.methods,
       parts: c.match.parts,
       matched_registered_photo: c.matchedPhoto ? { registered_at: c.matchedPhoto.uploadedAt } : null,
-      how: "Perceptual hashes (Cloudinary pHash on the full image; Kavach pHash and dHash on the face crop) compared by Hamming distance, each comparison also run against the mirrored suspect. Bands: >=0.80 derived, 0.60-0.79 likely, <0.60 none.",
+      how: "Perceptual hashes (Cloudinary pHash on the full image; Kavach 256-bit pHash and dHash on the face crop) compared by Hamming distance, each comparison also run against the mirrored suspect. The face hashes carry the score; the full-image hash can only raise it. Bands: >=0.80 derived, 0.70-0.79 likely, <0.70 none. Calibrated on real portraits: a different person scores 0.55-0.61, the same face after crop, screenshot, body swap or tilt 0.83 or more.",
     },
     drafts: c.drafts ? { provider: c.drafts.provider, fallback: c.drafts.fallback, severity: c.drafts.severity } : null,
     software: "Kavach, MIT, https://github.com/ShivamShrivastava18/kavach",

@@ -19,11 +19,9 @@ export function parseDraft(raw: string): ParsedDraft | null {
   for (const c of candidates(raw)) {
     try {
       const o = JSON.parse(c.trim()) as Record<string, unknown>;
-      const description = o.description;
-      const platform = o.platform_complaint ?? o.platform;
-      const portal = o.portal_complaint ?? o.portal;
-      if (typeof description !== "string" || typeof platform !== "string" || typeof portal !== "string") continue;
-      return { description, platform, portal, severity: severity(o.severity) };
+      const { description, narrative } = o;
+      if (typeof description !== "string" || typeof narrative !== "string") continue;
+      return { description, narrative, severity: severity(o.severity) };
     } catch {
       continue;
     }

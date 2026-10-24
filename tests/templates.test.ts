@@ -50,3 +50,13 @@ test("both drafts end with the verify line", () => {
   expect(platform.trim().endsWith(VERIFY)).toBe(true);
   expect(portal.trim().endsWith(VERIFY)).toBe(true);
 });
+
+test("a narrative is inserted into both complaints, before the legal paragraph", () => {
+  const narrative = "On 23 October a friend sent me the post. The face is mine; the background and caption are not.";
+  const t = fillTemplates(base, narrative);
+  expect(t.platform).toContain(narrative);
+  expect(t.portal).toContain(narrative);
+  expect(t.platform.indexOf(narrative)).toBeLessThan(t.platform.indexOf("Rule 3(2)(b)"));
+  expect(t.portal.indexOf(narrative)).toBeLessThan(t.portal.indexOf("Section 66E"));
+  expect(t.platform.trim().endsWith(VERIFY)).toBe(true);
+});

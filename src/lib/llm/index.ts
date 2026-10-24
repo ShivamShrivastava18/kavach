@@ -1,5 +1,6 @@
 import { llmProvider } from "../env";
 import { redact, restore } from "../redact";
+import { fillTemplates } from "../templates";
 import { claudeProvider } from "./claude";
 import { demoDraft } from "./demo";
 import { gemmaProvider } from "./gemma";
@@ -8,6 +9,11 @@ import { validateDraft } from "./validate";
 import { buildPrompt } from "./prompt";
 import type { DraftInput, DraftOutput } from "./types";
 
+/**
+ * The model writes the plain-language parts (what happened, in her words, and how serious it is).
+ * The complaints themselves are templated around that narrative, so hashes, dates and section numbers
+ * never depend on the model. Names and URLs are redacted before the call and restored after.
+ */
 export async function draftComplaint(input: DraftInput): Promise<DraftOutput> {
   const provider = llmProvider();
   if (provider === "demo") return demoDraft(input);
@@ -18,30 +24,25 @@ export async function draftComplaint(input: DraftInput): Promise<DraftOutput> {
   const redacted: DraftInput = {
     ...input,
     facts: { ...input.facts, victimName: "[VICTIM_NAME]", postUrl: input.facts.postUrl ? "[POST_URL]" : undefined },
-    templates: {
-      platform: redact(input.templates.platform, facts),
-      portal: redact(input.templates.portal, facts),
-    },
+    templates: { platform: redact(input.templates.platform, facts), portal: redact(input.templates.portal, facts) },
   };
-  const images = [redacted.exhibitBlurPng, ...(redacted.matchedBlurPng ? [redacted.matchedBlurPng] : [])];
+  const images = [redacted.exhibitBlurPng];
   const prompt = buildPrompt(redacted, { hasImages: true });
   const textOnlyPrompt = buildPrompt(redacted, { hasImages: false });
 
   try {
-    const result =
-      provider === "claude" ? await claudeProvider(prompt, images) : await gemmaProvider(prompt, images, textOnlyPrompt);
+    const result = provider === "claude" ? await claudeProvider(prompt, images) : await gemmaProvider(prompt, images, textOnlyPrompt);
     const parsed = parseDraft(result.raw);
     if (!parsed) throw new Error(`unparseable response from ${result.model}`);
-    const restored = {
-      description: restore(parsed.description, facts),
-      platform: restore(parsed.platform, facts),
-      portal: restore(parsed.portal, facts),
-      severity: parsed.severity,
-    };
-    const valid = validateDraft(restored, { caseId: input.facts.caseId, exhibitSha256: input.facts.exhibitSha256, victimName: input.facts.victimName });
-    if (!valid) throw new Error(`draft from ${result.model} lost case facts`);
+    const valid = validateDraft(parsed);
+    if (!valid) throw new Error(`draft from ${result.model} failed validation`);
+    const narrative = restore(valid.narrative, facts);
+    const complaints = fillTemplates(input.facts, narrative);
     return {
-      ...valid,
+      description: restore(valid.description, facts),
+      platform: complaints.platform,
+      portal: complaints.portal,
+      severity: valid.severity,
       provider: result.model,
       fallback: false,
       textOnly: result.textOnly,

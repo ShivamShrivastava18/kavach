@@ -1,24 +1,18 @@
-import { VERIFY_LINE } from "../templates";
 import type { ParsedDraft } from "./types";
 
-export type DraftFacts = { caseId: string; exhibitSha256: string; victimName: string };
-
-function withVerifyLine(text: string): string {
-  const t = text.trim();
-  return t.endsWith(VERIFY_LINE) ? t : `${t}\n\n${VERIFY_LINE}`;
-}
+const MAX_CHARS = 2000;
+const PLACEHOLDER = /\[(victim[_ ]?name|post[_ ]?url)\]/i;
 
 /**
- * A complaint the model rewrote must still carry the case id, the SHA-256 prefix and the victim's
- * restored name. Anything else means the model drifted and the template is safer.
+ * The model only writes prose that is inserted into the templates, so the facts, hashes and section
+ * numbers cannot be lost. What can go wrong: empty text, runaway length, or a placeholder it did not keep
+ * exactly (so the restore step could not fill it).
  */
-export function validateDraft(d: ParsedDraft, facts: DraftFacts): ParsedDraft | null {
-  const shaPrefix = facts.exhibitSha256.slice(0, 16);
-  for (const text of [d.platform, d.portal]) {
-    if (!text.includes(facts.caseId)) return null;
-    if (!text.includes(shaPrefix)) return null;
-    if (!text.includes(facts.victimName)) return null;
-    if (/\[victim[_ ]?name\]/i.test(text) || /\[post[_ ]?url\]/i.test(text)) return null;
+export function validateDraft(d: ParsedDraft): ParsedDraft | null {
+  for (const text of [d.description, d.narrative]) {
+    const t = text.trim();
+    if (!t || t.length > MAX_CHARS) return null;
+    if (PLACEHOLDER.test(t)) return null;
   }
-  return { ...d, platform: withVerifyLine(d.platform), portal: withVerifyLine(d.portal) };
+  return { description: d.description.trim(), narrative: d.narrative.trim(), severity: d.severity };
 }

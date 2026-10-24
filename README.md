@@ -74,7 +74,27 @@ npx tsx scripts/smoke.ts http://localhost:3000   # end-to-end flow against a run
 
 ## How the match is scored
 
-Three 64-bit hashes: Cloudinary pHash on the full image, Kavach pHash and dHash on the face crop. With a face on both sides the score is `0.25 × full + 0.45 × face pHash + 0.30 × face dHash`; without a face it falls back to full-image pHash and dHash. Every comparison runs twice, once against the mirrored suspect. Calibration on the seed portraits: mirror and tint cost nothing, caption 0.92, JPEG q30 0.91, 256 px downscale 0.92, 90% crop with mirror, tint and caption 0.81. Bands: 80 and above is "made from your photo", 60 to 79 "likely", below 60 "no match".
+Three hashes: Cloudinary's 64-bit pHash on the full image, and Kavach's own 256-bit pHash (32x32 DCT, 16x16 low band) and dHash (17x16) on the face crop, cut from Cloudinary's face box with 20% padding and edge replication so a face at the border is framed like one with margin. With a face on both sides the face score is `0.6 × face pHash + 0.4 × face dHash`, and the final score is `max(face, 0.5 × face + 0.5 × full)`: the full-image hash can corroborate but never penalise, because a morph moves the face into a new frame on purpose. Without a face it falls back to full-image pHash and dHash. Every comparison runs twice, once against the mirrored suspect. Bands: 80 and above is "made from your photo", 70 to 79 "likely", below 70 "no match".
+
+Calibrated on real portraits (`scripts/morph-bench.ts`, free-licence Pexels photos, 24 Oct 2026), through the live Cloudinary path:
+
+| Edit of the registered photo | Score | Verdict |
+| --- | --- | --- |
+| Exact file | 1.000 | derived |
+| WhatsApp-style recompression (q20) | 0.964 | derived |
+| 400 px thumbnail | 0.977 | derived |
+| Mirrored | 0.964 | derived |
+| Cropped to the face | 0.830 | derived |
+| 3 degree tilt | 0.852 | derived |
+| Warm colour filter | 0.960 | derived |
+| Sepia | 0.980 | derived |
+| Abusive caption added | 0.998 | derived |
+| Screenshot of a chat containing it | 0.837 | derived |
+| Face pasted onto another photo | 0.850 | derived |
+| Mirror + crop + recompress + filter | 0.930 | derived |
+| Five different people (controls) | 0.553 to 0.605 | none |
+
+What it does not do: it does not recognise a face. A deepfake generated from a photo that was never registered will not match, and the verdict says so ("no registered photo matched"). The complaint then rests on identity and consent, which the drafts state plainly.
 
 ## Repo map
 

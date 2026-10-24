@@ -26,7 +26,7 @@ The demo names the features on screen: the case page shows method chips ("Cloudi
 
 ## 3. Technical depth
 
-- Own perceptual hashing: 32x32 DCT pHash and 9x8 dHash, 64-bit, MIT (`src/lib/fingerprint.ts`), with tests on resize, tint, crop, mirror and a different image.
+- Own perceptual hashing: 32x32 DCT pHash (16x16 band) and 17x16 dHash, 256-bit, MIT (`src/lib/fingerprint.ts`), with tests on resize, tint, crop, mirror, edge framing and a different image. Calibrated on real portraits through the live Cloudinary path (`scripts/morph-bench.ts`, table in the README): 12 of 12 edits derived, 5 of 5 different people none.
 - Match engine with a mirror pass and face-weighted scoring, calibrated and documented (`src/lib/match.ts`, `scripts/dev/calib.ts`, journey log). Calibration table in the README.
 - Gemma 4 through the Gemini API with image input, model fallback, text-only retry, per-call timeout and total budget (`src/lib/llm/gemma.ts`); tolerant JSON parser (`src/lib/llm/parse.ts`); output validation that refuses drafts that lost the case id, hash or name (`src/lib/llm/validate.ts`).
 - Two-phase check so the verdict never waits on the model.
