@@ -47,7 +47,8 @@ export default function VaultPage() {
     });
     setBusy(false);
     if (!r.ok) {
-      setError(((await r.json()) as { error: string }).error);
+      const body = (await r.json().catch(() => ({}))) as { error?: string };
+      setError(body.error ?? "Something went wrong. Try again.");
       return;
     }
     await load();
@@ -57,18 +58,25 @@ export default function VaultPage() {
     setError(null);
     setNotice(null);
     setBusy(true);
-    const blob = await downscale(file);
-    const fd = new FormData();
-    fd.append("file", blob, file.name);
-    const r = await fetch("/api/vault", { method: "POST", body: fd });
-    setBusy(false);
-    const body = (await r.json()) as { photo?: Photo; warning?: string; error?: string };
-    if (!r.ok) {
-      setError(body.error ?? "Upload failed.");
+    let blob: Blob;
+    try {
+      blob = await downscale(file);
+    } catch (e) {
+      setBusy(false);
+      setError((e as Error).message);
       return;
     }
-    if (body.photo) setPhotos((p) => [...p, body.photo!]);
-    if (body.warning) setNotice(body.warning);
+    const fd = new FormData();
+    fd.append("file", blob, file.name.replace(/\.[^.]+$/, "") + ".jpg");
+    const r = await fetch("/api/vault", { method: "POST", body: fd }).catch(() => null);
+    setBusy(false);
+    const body = (await r?.json().catch(() => ({}))) as { photo?: Photo; warning?: string; error?: string } | undefined;
+    if (!r || !r.ok) {
+      setError(body?.error ?? (r?.status === 413 ? "That image is too large to send." : "Upload failed. Try again."));
+      return;
+    }
+    if (body?.photo) setPhotos((p) => [...p, body.photo!]);
+    if (body?.warning) setNotice(body.warning);
   }
 
   async function remove(publicId: string) {

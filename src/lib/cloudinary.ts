@@ -65,7 +65,17 @@ export function encodeOverlayText(text: string): string {
 
 export function blurTransformation(stamp: { caseId: string; sha256: string; at: string }): string {
   const text = encodeOverlayText(`KAVACH EVIDENCE  case ${stamp.caseId}  sha256 ${stamp.sha256.slice(0, 16)}  ${stamp.at}`);
-  return `e_pixelate_faces:30,e_blur:600/l_text:Arial_28_bold:${text},co_white,g_south,y_24`;
+  return `c_limit,w_1200,h_1200/e_pixelate_faces:30/e_blur:1000/l_text:Arial_28_bold:${text},co_white,b_rgb:000000bb,g_south,y_0,w_1200,c_fit`;
+}
+
+/** Blurred, face-pixelated thumbnail of a vault photo, for the model only. */
+export function blurThumbTransformation(): string {
+  return "c_fill,g_face,w_400,h_400/e_pixelate_faces:20/e_blur:600";
+}
+
+/** PNG variant of the blurred exhibit for the model (smaller, lossless). */
+export function blurPngTransformation(stamp: { caseId: string; sha256: string; at: string }): string {
+  return blurTransformation(stamp).replace("c_limit,w_1200,h_1200", "c_limit,w_768,h_768") + "/f_png";
 }
 
 export function faceTransformation(): string {

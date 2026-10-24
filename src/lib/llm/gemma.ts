@@ -3,6 +3,8 @@ import { required } from "../env";
 import type { ProviderResult } from "./types";
 
 export const GEMMA_MODELS = ["gemma-4-26b-a4b-it", "gemma-4-31b-it"] as const;
+const PER_CALL_TIMEOUT_MS = 20_000;
+const TOTAL_BUDGET_MS = 48_000;
 
 function client() {
   return new GoogleGenAI({ apiKey: required("GEMINI_API_KEY") });
@@ -17,7 +19,7 @@ async function call(model: string, prompt: string, images: Buffer[]): Promise<st
   const res = await ai.models.generateContent({
     model,
     contents: [{ role: "user", parts }],
-    config: { temperature: 0.3, maxOutputTokens: 4096 },
+    config: { temperature: 0.3, maxOutputTokens: 4096, httpOptions: { timeout: PER_CALL_TIMEOUT_MS } },
   });
   const text = res.text;
   if (!text) throw new Error(`empty response from ${model}`);
@@ -32,12 +34,14 @@ function looksImageRelated(e: unknown): boolean {
 /** Tries each Gemma model with images; on an image-related failure retries that model text-only. */
 export async function gemmaProvider(prompt: string, images: Buffer[], textOnlyPrompt?: string): Promise<ProviderResult> {
   let lastErr: unknown;
+  const started = Date.now();
   for (const model of GEMMA_MODELS) {
+    if (Date.now() - started > TOTAL_BUDGET_MS) break;
     try {
       return { raw: await call(model, prompt, images), model };
     } catch (e) {
       lastErr = e;
-      if (images.length && looksImageRelated(e)) {
+      if (images.length && looksImageRelated(e) && Date.now() - started < TOTAL_BUDGET_MS) {
         try {
           return { raw: await call(model, textOnlyPrompt ?? prompt, []), model, textOnly: true };
         } catch (e2) {

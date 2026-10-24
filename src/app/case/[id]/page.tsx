@@ -46,13 +46,14 @@ export default function CasePage({ params }: { params: Promise<{ id: string }> }
         setDrafts(d.case.drafts);
         return;
       }
-      const dr = await fetch(`/api/case/${id}/draft`, { method: "POST" });
+      const dr = await fetch(`/api/case/${id}/draft`, { method: "POST" }).catch(() => null);
       if (cancelled) return;
-      if (!dr.ok) {
-        setDraftError(((await dr.json()) as { error?: string }).error ?? "Drafting failed.");
+      const body = (await dr?.json().catch(() => ({}))) as { drafts?: Drafts; error?: string } | undefined;
+      if (!dr || !dr.ok || !body?.drafts) {
+        setDraftError(body?.error ?? "Drafting timed out. Reload the page to try again.");
         return;
       }
-      setDrafts(((await dr.json()) as { drafts: Drafts }).drafts);
+      setDrafts(body.drafts);
     })();
     return () => {
       cancelled = true;

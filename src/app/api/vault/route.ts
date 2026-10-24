@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { createHash } from "node:crypto";
 import { currentProfile, fail, readImageField } from "@/lib/api";
-import { deleteAsset, derivedBuffer, faceTransformation, uploadPrivate } from "@/lib/cloudinary";
+import { deleteAsset, uploadPrivate } from "@/lib/cloudinary";
 import { isDemoMode } from "@/lib/env";
 import { computePrints } from "@/lib/prints";
 import { saveProfile } from "@/lib/store";
@@ -24,16 +24,14 @@ export async function POST(req: Request) {
   if ("error" in img) return fail(400, img.error);
 
   const sha256 = createHash("sha256").update(img.buf).digest("hex");
-  const up = await uploadPrivate(img.buf, `kavach/${profile.id}/vault`);
-  let faceCropBuf: Buffer | undefined;
-  if (up.faces.length) {
-    try {
-      faceCropBuf = await derivedBuffer(up.publicId, faceTransformation());
-    } catch {
-      faceCropBuf = undefined;
-    }
+  let up;
+  try {
+    up = await uploadPrivate(img.buf, `kavach/${profile.id}/vault`);
+  } catch (e) {
+    console.error("[kavach] vault upload failed:", (e as Error).message);
+    return fail(502, "Storage is not responding. Try again in a moment.");
   }
-  const prints = await computePrints(img.buf, up.faces, up.phash, faceCropBuf);
+  const prints = await computePrints(img.buf, up.faces, up.phash);
   const photo: VaultPhoto = {
     publicId: up.publicId,
     uploadedAt: new Date().toISOString(),

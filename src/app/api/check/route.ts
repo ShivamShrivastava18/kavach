@@ -1,7 +1,8 @@
 import { NextResponse } from "next/server";
 import { createHash } from "node:crypto";
 import { currentProfile, fail, readImageField } from "@/lib/api";
-import { derivedBuffer, faceTransformation, uploadPrivate } from "@/lib/cloudinary";
+import { uploadPrivate } from "@/lib/cloudinary";
+import { isExplicit, MODERATION_PARAM } from "@/lib/moderation";
 import { isDemoMode } from "@/lib/env";
 import { bestMatch } from "@/lib/match";
 import { computePrints } from "@/lib/prints";
@@ -11,16 +12,6 @@ import type { CaseRecord } from "@/lib/types";
 
 
 const PLATFORMS = new Set(["Instagram", "X", "WhatsApp", "Telegram", "Facebook", "Snapchat", "Other"]);
-
-type ModerationEntry = { kind?: string; status?: string; response?: { moderation_labels?: { confidence?: number; name?: string }[] } };
-
-function isExplicit(moderation: unknown, rejected: boolean): boolean {
-  if (rejected) return true;
-  if (!Array.isArray(moderation)) return false;
-  return (moderation as ModerationEntry[]).some((m) =>
-    (m.response?.moderation_labels ?? []).some((l) => /nudity|explicit|sexual/i.test(l.name ?? "") && (l.confidence ?? 0) >= 60),
-  );
-}
 
 export async function POST(req: Request) {
   const profile = await currentProfile();
@@ -39,17 +30,15 @@ export async function POST(req: Request) {
 
   const caseId = newId();
   const sha256 = createHash("sha256").update(img.buf).digest("hex");
-  const moderation = process.env.CLOUDINARY_MODERATION === "1" ? "aws_rek" : undefined;
-  const up = await uploadPrivate(img.buf, `kavach/${profile.id}/exhibits`, { moderation, publicId: caseId });
-  let faceCropBuf: Buffer | undefined;
-  if (up.faces.length) {
-    try {
-      faceCropBuf = await derivedBuffer(up.publicId, faceTransformation());
-    } catch {
-      faceCropBuf = undefined;
-    }
+  const moderation = process.env.CLOUDINARY_MODERATION === "1" ? MODERATION_PARAM : undefined;
+  let up;
+  try {
+    up = await uploadPrivate(img.buf, `kavach/${profile.id}/exhibits`, { moderation, publicId: caseId });
+  } catch (e) {
+    console.error("[kavach] exhibit upload failed:", (e as Error).message);
+    return fail(502, "Storage is not responding. Try again in a moment.");
   }
-  const prints = await computePrints(img.buf, up.faces, up.phash, faceCropBuf);
+  const prints = await computePrints(img.buf, up.faces, up.phash);
   const match = bestMatch(prints, profile.vault.map((v) => v.prints));
   const matched = match.bestIndex >= 0 ? profile.vault[match.bestIndex] : undefined;
 
@@ -62,7 +51,7 @@ export async function POST(req: Request) {
     exhibitPublicId: up.publicId,
     exhibitSha256: sha256,
     exhibitFaces: up.faces,
-    explicit: isExplicit(up.moderation, up.moderationRejected),
+    explicit: isExplicit(up.moderation),
     moderation: up.moderation,
     match,
     matchedPhoto: matched ? { publicId: matched.publicId, uploadedAt: matched.uploadedAt } : undefined,

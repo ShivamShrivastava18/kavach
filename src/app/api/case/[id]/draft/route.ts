@@ -2,13 +2,11 @@ import { NextResponse } from "next/server";
 import { readFileSync } from "node:fs";
 import path from "node:path";
 import { currentProfile, fail } from "@/lib/api";
-import { derivedBuffer } from "@/lib/cloudinary";
+import { blurPngTransformation, blurThumbTransformation, derivedBuffer } from "@/lib/cloudinary";
 import { isDemoMode } from "@/lib/env";
 import { draftComplaint } from "@/lib/llm";
 import { getCase, saveCase } from "@/lib/store";
 import { fillTemplates, type CaseFacts } from "@/lib/templates";
-import { stampFor } from "@/lib/caseview";
-import { encodeOverlayText } from "@/lib/cloudinary";
 
 export const maxDuration = 60;
 
@@ -46,13 +44,14 @@ export async function POST(req: Request, ctx: { params: Promise<{ id: string }> 
     exhibitBlurPng = demoFile("exhibit-blurred.png");
     matchedBlurPng = demoFile("priya-1-blurred.png");
   } else {
-    const stamp = encodeOverlayText(stampFor(c));
-    exhibitBlurPng = await derivedBuffer(
-      c.exhibitPublicId,
-      `c_limit,w_768,h_768/e_pixelate_faces:30,e_blur:600/l_text:Arial_20_bold:${stamp},co_white,b_rgb:000000bb,g_south,y_0,w_768,c_fit/f_png`,
-    );
+    try {
+      exhibitBlurPng = await derivedBuffer(c.exhibitPublicId, blurPngTransformation({ caseId: c.id, sha256: c.exhibitSha256, at: c.createdAt }));
+    } catch (e) {
+      console.error("[kavach] blurred exhibit fetch failed:", (e as Error).message);
+      return fail(502, "Could not fetch the blurred exhibit. Reload to try again.");
+    }
     if (c.matchedPhoto && c.match.verdict !== "none") {
-      matchedBlurPng = await derivedBuffer(c.matchedPhoto.publicId, "c_fill,g_face,w_400,h_400/e_pixelate_faces:20,e_blur:400/f_png").catch(() => undefined);
+      matchedBlurPng = await derivedBuffer(c.matchedPhoto.publicId, blurThumbTransformation() + "/f_png").catch(() => undefined);
     }
   }
 

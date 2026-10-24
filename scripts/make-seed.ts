@@ -77,7 +77,8 @@ async function main() {
     .resize(SIZE, SIZE)
     .png()
     .toBuffer();
-  writeFileSync("public/demo/exhibit.png", exhibit);
+  mkdirSync("scripts/seed-out", { recursive: true });
+  writeFileSync("scripts/seed-out/exhibit.png", exhibit);
 
   // Face box in the exhibit: central region (the crop was central and the rotation small).
   const s = SIZE / crop;

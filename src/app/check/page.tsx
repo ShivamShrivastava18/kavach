@@ -25,14 +25,22 @@ export default function CheckPage() {
     setError(null);
     setBusy(true);
     const fd = new FormData();
-    if (file) fd.append("file", await downscale(file), file.name);
+    if (file) {
+      try {
+        fd.append("file", await downscale(file), file.name.replace(/\.[^.]+$/, "") + ".jpg");
+      } catch (e) {
+        setBusy(false);
+        setError((e as Error).message);
+        return;
+      }
+    }
     fd.append("platform", platform);
     fd.append("postUrl", postUrl);
-    const r = await fetch("/api/check", { method: "POST", body: fd });
-    const body = (await r.json()) as { caseId?: string; error?: string };
-    if (!r.ok || !body.caseId) {
+    const r = await fetch("/api/check", { method: "POST", body: fd }).catch(() => null);
+    const body = (await r?.json().catch(() => ({}))) as { caseId?: string; error?: string } | undefined;
+    if (!r || !r.ok || !body?.caseId) {
       setBusy(false);
-      setError(body.error ?? "Check failed.");
+      setError(body?.error ?? (r?.status === 413 ? "That image is too large to send." : "Check failed. Try again."));
       return;
     }
     router.push(`/case/${body.caseId}`);

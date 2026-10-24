@@ -22,9 +22,3 @@ test("a face box yields face prints", async () => {
   expect(p.face?.phash).toMatch(/^[0-9a-f]{16}$/);
   expect(p.faceMirror?.dhash).toMatch(/^[0-9a-f]{16}$/);
 });
-
-test("a cloudinary face crop is used when given", async () => {
-  const crop = await sharp(await img()).extract({ left: 50, top: 40, width: 100, height: 100 }).png().toBuffer();
-  const p = await computePrints(await img(), [[50, 40, 100, 100]], undefined, crop);
-  expect(p.face?.phash).toMatch(/^[0-9a-f]{16}$/);
-});

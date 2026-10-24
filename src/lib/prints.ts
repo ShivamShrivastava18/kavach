@@ -9,12 +9,13 @@ export function firstFaceBox(faces: number[][]): Box | undefined {
   return { x: f[0], y: f[1], width: f[2], height: f[3] };
 }
 
-export async function computePrints(
-  buf: Buffer,
-  faces: number[][],
-  cldPhash?: string,
-  faceCropFromCloudinary?: Buffer,
-): Promise<PhotoPrints> {
+/** Applies the EXIF orientation so hashes and face boxes refer to the upright image, as Cloudinary's do. */
+export async function upright(buf: Buffer): Promise<Buffer> {
+  return sharp(buf).rotate().png().toBuffer();
+}
+
+export async function computePrints(raw: Buffer, faces: number[][], cldPhash?: string): Promise<PhotoPrints> {
+  const buf = await upright(raw);
   const mirrored = await mirror(buf);
   const out: PhotoPrints = {
     cldPhash,
@@ -22,10 +23,7 @@ export async function computePrints(
     fullMirror: await fingerprint(mirrored),
   };
   const box = firstFaceBox(faces);
-  if (faceCropFromCloudinary) {
-    out.face = await fingerprint(faceCropFromCloudinary);
-    out.faceMirror = await fingerprint(await mirror(faceCropFromCloudinary));
-  } else if (box) {
+  if (box) {
     const W = (await sharp(buf).metadata()).width ?? 0;
     out.face = await fingerprint(await faceCrop(buf, box));
     out.faceMirror = await fingerprint(await faceCrop(mirrored, { ...box, x: W - box.x - box.width }));
