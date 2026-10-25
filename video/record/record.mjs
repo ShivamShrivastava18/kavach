@@ -68,14 +68,16 @@ async function main() {
     recordVideo: { dir: RAW, size: { width: 1920, height: 1080 } },
   });
   await context.addInitScript(CURSOR);
+  // Larger UI in the 1920x1080 frame: a CSS zoom on the document, rendered natively (no upscaling).
+  await context.addInitScript(`document.addEventListener('DOMContentLoaded', () => { document.documentElement.style.zoom = '1.25'; });`);
   const page = await context.newPage();
-  await page.mouse.move(960, 700);
+  await page.mouse.move(760, 560);
 
   // Home
   await page.goto(BASE + "/", { waitUntil: "networkidle" });
   mark("home");
   await pause(2500);
-  await page.mouse.move(700, 520, { steps: 30 });
+  await page.mouse.move(560, 420, { steps: 30 });
   await pause(800);
   await glide(page, page.getByRole("link", { name: "Raise your shield" }), { click: true, settle: 700 });
   await page.waitForURL(/\/vault/);
@@ -144,7 +146,12 @@ async function main() {
   const bundle = page.getByRole("link", { name: "Download evidence bundle" }).first();
   if (await bundle.count()) {
     await glide(page, bundle, { settle: 600 });
-    await pause(1200);
+    await pause(900);
+  }
+  const release = page.getByRole("button", { name: "Release original for police" }).first();
+  if (await release.count()) {
+    await glide(page, release, { settle: 600 });
+    await pause(900);
   }
   mark("end");
   await pause(1500);

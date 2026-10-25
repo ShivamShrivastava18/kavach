@@ -1,16 +1,16 @@
 {
   "base": "https://kavach-flame-gamma.vercel.app",
   "marks": {
-    "home": 1.144,
-    "vault-open": 6.261,
-    "shield-created": 13.113,
-    "vault-uploading": 15.21,
-    "vault-photo": 17.495,
-    "check-open": 21.192,
-    "check-filled": 28.442,
-    "check-running": 29.621,
-    "case-open": 32.664,
-    "drafts-ready": 41.964,
-    "end": 52.642
+    "home": 1.768,
+    "vault-open": 6.883,
+    "shield-created": 13.765,
+    "vault-uploading": 15.869,
+    "vault-photo": 18.153,
+    "check-open": 21.831,
+    "check-filled": 29.082,
+    "check-running": 30.264,
+    "case-open": 34.955,
+    "drafts-ready": 43.27,
+    "end": 55.63
   }
 }

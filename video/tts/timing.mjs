@@ -15,7 +15,7 @@ const fps = script.fps;
 let from = 0;
 const scenes = script.scenes.map((s) => {
   const vo = durations[s.id];
-  const seconds = vo ? Math.max(s.minSeconds * 0.6, vo + TAIL) : s.minSeconds;
+  const seconds = vo ? Math.max(s.minSeconds, vo + TAIL) : s.minSeconds;
   const frames = Math.round(seconds * fps);
   const clip = s.kind === "footage" ? clips[s.clip] : undefined;
   const out = { ...s, from, frames, seconds, hasVo: Boolean(vo), voSeconds: vo ?? null, clip };

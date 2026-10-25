@@ -16,7 +16,7 @@ export const Caption: React.FC<{ text: string; duration: number; bottom?: number
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
-        gap: 14,
+        gap: 0,
         fontFamily: T.mono,
         fontSize: 22,
         letterSpacing: "0.14em",
@@ -26,8 +26,8 @@ export const Caption: React.FC<{ text: string; duration: number; bottom?: number
         transform: `translateY(${(1 - inT) * 8}px)`,
       }}
     >
-      <span style={{ width: 7, height: 7, background: T.accent, display: "inline-block" }} />
-      <span style={{ background: "rgba(12,12,14,0.72)", padding: "8px 14px", borderRadius: 6 }}>{text}</span>
+      <span style={{ width: 7, height: 7, background: T.accent, display: "inline-block", marginRight: 14 }} />
+      <span style={{ background: "rgba(12,12,14,0.92)", padding: "10px 18px", borderRadius: 6, boxShadow: "0 0 0 1px rgba(38,38,44,0.9)" }}>{text}</span>
     </div>
   );
 };

@@ -20,7 +20,7 @@ export const Footage: React.FC<{ clip: Clip; frames: number; id: string }> = ({ 
   const lastSourceFrame = Math.round(clip.end * fps) - 1;
 
   const ease = { extrapolateLeft: "clamp", extrapolateRight: "clamp", easing: Easing.inOut(Easing.cubic) } as const;
-  const scale = interpolate(frame, [0, frames], [1.0, 1.09], { ...ease, easing: Easing.linear });
+  const scale = interpolate(frame, [0, frames], [1.0, 1.05], { ...ease, easing: Easing.linear });
   const fadeIn = interpolate(frame, [0, 12], [0, 1], ease);
   const fadeOut = interpolate(frame, [frames - 12, frames], [1, 0], ease);
   const [fx, fy] = clip.focus;

@@ -2,7 +2,7 @@
   "fps": 30,
   "width": 1920,
   "height": 1080,
-  "totalFrames": 4331,
+  "totalFrames": 4456,
   "scenes": [
     {
       "id": "01-hook",
@@ -32,8 +32,8 @@
       "id": "03-vault",
       "kind": "footage",
       "clip": {
-        "start": 6.5,
-        "end": 20.5,
+        "start": 7,
+        "end": 21,
         "focus": [
           0.45,
           0.5
@@ -52,8 +52,8 @@
       "id": "04-check",
       "kind": "footage",
       "clip": {
-        "start": 21.3,
-        "end": 32.5,
+        "start": 21.8,
+        "end": 37.5,
         "focus": [
           0.5,
           0.45
@@ -72,11 +72,11 @@
       "id": "05-verdict",
       "kind": "footage",
       "clip": {
-        "start": 32.5,
-        "end": 42.5,
+        "start": 37.5,
+        "end": 43.5,
         "focus": [
-          0.4,
-          0.45
+          0.3,
+          0.25
         ]
       },
       "narration": "The verdict: made from your photo, with the score and the methods behind it. We calibrated this on real portraits. Cropping, mirroring, filters, a screenshot of a chat, the face pasted onto another body: every one of them still matched. Five different people did not.",
@@ -92,11 +92,11 @@
       "id": "06-complaint",
       "kind": "footage",
       "clip": {
-        "start": 42.6,
-        "end": 53.6,
+        "start": 43.5,
+        "end": 56,
         "focus": [
-          0.62,
-          0.6
+          0.4,
+          0.7
         ]
       },
       "narration": "Now the complaint. Gemma 4 sees only the blurred exhibit and the structured evidence. Her name and the link are redacted before the call. It writes the plain-language account; the legal text is templated around it, so the hashes, dates and section numbers never depend on a model. One complaint for the platform's grievance officer, one for the national cybercrime portal, and an evidence bundle she can hand to the police.",
@@ -125,10 +125,10 @@
       "kind": "card",
       "narration": "They can morph the photo. They can't hide where it came from. Kavach.",
       "caption": "Open source. MIT. Free tiers only.",
-      "minSeconds": 7,
+      "minSeconds": 10,
       "from": 4156,
-      "frames": 175,
-      "seconds": 5.830958,
+      "frames": 300,
+      "seconds": 10,
       "hasVo": true,
       "voSeconds": 5.130958
     }
