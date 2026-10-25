@@ -1,0 +1,18 @@
+{
+  "01-hook": 12.090958,
+  "01-hook:provider": "gemini:gemini-2.5-flash-preview-tts",
+  "02-law": 18.530958,
+  "02-law:provider": "gemini:gemini-2.5-flash-preview-tts",
+  "03-vault": 18.890958,
+  "03-vault:provider": "gemini:gemini-2.5-flash-preview-tts",
+  "04-check": 19.410958,
+  "04-check:provider": "gemini:gemini-2.5-flash-preview-tts",
+  "05-verdict": 19.330958,
+  "05-verdict:provider": "gemini:gemini-2.5-flash-preview-tts",
+  "06-complaint": 25.770958,
+  "06-complaint:provider": "gemini:gemini-2.5-flash-preview-tts",
+  "07-stack": 19.610958,
+  "07-stack:provider": "gemini:gemini-2.5-flash-preview-tts",
+  "08-close": 5.130958,
+  "08-close:provider": "gemini:gemini-2.5-flash-preview-tts"
+}
