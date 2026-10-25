@@ -10,7 +10,7 @@ Built by team yearners during Hacktober HackDays (SheBuilds Delhi, powered by ML
 - One-line pitch: Proves a morphed image was made from her own photo, blurs it so she never has to look at it, and writes the complaint a platform must act on within 2 hours.
 - Repository: https://github.com/ShivamShrivastava18/kavach
 - Live demo: https://kavach-flame-gamma.vercel.app
-- Demo video: [YouTube link]
+- Demo video: https://youtu.be/p4adFXAz8tk
 - Presentation / slides: the demo video doubles as the pitch; the README carries the technical write-up.
 
 ## 2. Team Members and Roles
@@ -158,7 +158,7 @@ Built by team yearners during Hacktober HackDays (SheBuilds Delhi, powered by ML
 
 ## 12. Screenshots and Demo Media
 
-- Demo video: [YouTube link]
+- Demo video: https://youtu.be/p4adFXAz8tk
 - Home, vault, check and case pages: screenshots in the repository README.
 
 ## 13. Future Scope

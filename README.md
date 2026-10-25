@@ -1,6 +1,6 @@
 # Kavach
 
-Live: https://kavach-flame-gamma.vercel.app
+Live: https://kavach-flame-gamma.vercel.app · Demo video: https://youtu.be/p4adFXAz8tk
 
 **A photo shield for women.** Kavach proves a morphed image was made from your own photo, blurs it so you never have to look at it clear, and writes the two complaints that get it taken down: one for the platform, citing the 2-hour removal duty under the IT Rules as amended on 10 Feb 2026, and one for the National Cyber Crime Reporting Portal.
 

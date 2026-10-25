@@ -37,7 +37,8 @@ Next.js 16 (App Router), React 19, TypeScript, Tailwind v4, sharp, Cloudinary No
 
 - Live: https://kavach-flame-gamma.vercel.app
 - Repository: https://github.com/ShivamShrivastava18/kavach
-- Demo video: (upload `kavach-demo.mp4` from the Desktop to YouTube or Drive and paste the link)
+- Demo video: https://youtu.be/p4adFXAz8tk
+- Notion documentation: https://app.notion.com/p/Kavach-Hacktober-HackDays-2026-404efe91518a808db9f9dc024b22139b
 - Build journey (for Notion): docs/build-journey.md in the repository
 
 ## Sensitive-data note
