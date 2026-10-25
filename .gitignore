@@ -42,3 +42,6 @@ next-env.d.ts
 .superpowers/
 .playwright-mcp/
 scripts/bench-out/
+
+# local secrets
+.env
