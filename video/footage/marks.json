@@ -1,0 +1,16 @@
+{
+  "base": "https://kavach-flame-gamma.vercel.app",
+  "marks": {
+    "home": 1.144,
+    "vault-open": 6.261,
+    "shield-created": 13.113,
+    "vault-uploading": 15.21,
+    "vault-photo": 17.495,
+    "check-open": 21.192,
+    "check-filled": 28.442,
+    "check-running": 29.621,
+    "case-open": 32.664,
+    "drafts-ready": 41.964,
+    "end": 52.642
+  }
+}

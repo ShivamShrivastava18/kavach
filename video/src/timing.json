@@ -1,0 +1,136 @@
+{
+  "fps": 30,
+  "width": 1920,
+  "height": 1080,
+  "totalFrames": 3540,
+  "scenes": [
+    {
+      "id": "01-hook",
+      "kind": "card",
+      "narration": "Someone takes a photo of a woman from her own profile, morphs it, and posts it. She finds out from a friend. Within an hour it is on three platforms. This is Kavach.",
+      "caption": "Someone morphs her photo. She finds out from a friend.",
+      "minSeconds": 9,
+      "from": 0,
+      "frames": 270,
+      "seconds": 9,
+      "hasVo": false,
+      "voSeconds": null
+    },
+    {
+      "id": "02-law",
+      "kind": "card",
+      "narration": "Since February 2026, India's IT Rules give platforms two hours to take down a non-consensual morphed image once they receive a complaint. The hard part is not the law. It is proving, on the day, that the image was made from her photo, and writing a complaint they must act on.",
+      "caption": "Rule 3(2)(b): two hours to act",
+      "minSeconds": 15,
+      "from": 270,
+      "frames": 450,
+      "seconds": 15,
+      "hasVo": false,
+      "voSeconds": null
+    },
+    {
+      "id": "03-vault",
+      "kind": "footage",
+      "clip": {
+        "start": 6.5,
+        "end": 20.5,
+        "focus": [
+          0.45,
+          0.5
+        ]
+      },
+      "narration": "First, she raises her shield. She registers the photos she actually posts. Each one is uploaded privately to Cloudinary, which returns a perceptual hash and the face box the moment it lands. Kavach adds two fingerprints of its own, 256-bit hashes of the face crop. Nobody else can open the vault.",
+      "caption": "Register the real photos. Private, fingerprinted.",
+      "minSeconds": 16,
+      "from": 720,
+      "frames": 480,
+      "seconds": 16,
+      "hasVo": false,
+      "voSeconds": null
+    },
+    {
+      "id": "04-check",
+      "kind": "footage",
+      "clip": {
+        "start": 21.3,
+        "end": 32.5,
+        "focus": [
+          0.5,
+          0.45
+        ]
+      },
+      "narration": "Then the morph arrives. She drops it in, says where it appeared, and never has to look at it again. Kavach stores it privately, fingerprints it, compares it against every registered photo, including a mirrored pass, and serves it back only blurred, pixelated and stamped with the case id, the hash and the time.",
+      "caption": "Drop the morph in. You never see it unblurred.",
+      "minSeconds": 18,
+      "from": 1200,
+      "frames": 540,
+      "seconds": 18,
+      "hasVo": false,
+      "voSeconds": null
+    },
+    {
+      "id": "05-verdict",
+      "kind": "footage",
+      "clip": {
+        "start": 32.5,
+        "end": 42.5,
+        "focus": [
+          0.4,
+          0.45
+        ]
+      },
+      "narration": "The verdict: made from your photo, with the score and the methods behind it. We calibrated this on real portraits. Cropping, mirroring, filters, a screenshot of a chat, the face pasted onto another body: every one of them still matched. Five different people did not.",
+      "caption": "Derived. Calibrated on real portraits.",
+      "minSeconds": 16,
+      "from": 1740,
+      "frames": 480,
+      "seconds": 16,
+      "hasVo": false,
+      "voSeconds": null
+    },
+    {
+      "id": "06-complaint",
+      "kind": "footage",
+      "clip": {
+        "start": 42.6,
+        "end": 53.6,
+        "focus": [
+          0.62,
+          0.6
+        ]
+      },
+      "narration": "Now the complaint. Gemma 4 sees only the blurred exhibit and the structured evidence. Her name and the link are redacted before the call. It writes the plain-language account; the legal text is templated around it, so the hashes, dates and section numbers never depend on a model. One complaint for the platform's grievance officer, one for the national cybercrime portal, and an evidence bundle she can hand to the police.",
+      "caption": "Gemma 4 writes her account. The law is templated.",
+      "minSeconds": 22,
+      "from": 2220,
+      "frames": 660,
+      "seconds": 22,
+      "hasVo": false,
+      "voSeconds": null
+    },
+    {
+      "id": "07-stack",
+      "kind": "card",
+      "narration": "Cloudinary is the whole backend: private storage, face detection, perceptual hashing, moderation, and every blurred derivative is a signed transformation. Gemma 4 runs on the free tier with thinking set to minimal. It is open source, MIT, and it runs on nothing but free tiers.",
+      "caption": "Cloudinary + Gemma 4 + Next.js. MIT.",
+      "minSeconds": 15,
+      "from": 2880,
+      "frames": 450,
+      "seconds": 15,
+      "hasVo": false,
+      "voSeconds": null
+    },
+    {
+      "id": "08-close",
+      "kind": "card",
+      "narration": "They can morph the photo. They can't hide where it came from. Kavach.",
+      "caption": "Open source. MIT. Free tiers only.",
+      "minSeconds": 7,
+      "from": 3330,
+      "frames": 210,
+      "seconds": 7,
+      "hasVo": false,
+      "voSeconds": null
+    }
+  ]
+}
