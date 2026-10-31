@@ -8,7 +8,8 @@ export type PhotoPrints = {
   faceMirror?: Fingerprint;
 };
 
-export type Verdict = "derived" | "likely" | "none";
+export { THRESHOLDS, verdictFor, type Verdict } from "./thresholds";
+import { verdictFor, type Verdict } from "./thresholds";
 
 export type MatchScore = { score: number; parts: Record<string, number>; mirrored: boolean };
 
@@ -21,9 +22,6 @@ export type MatchResult = {
   methods: string[];
 };
 
-// Calibrated on real portraits (scripts/morph-bench.ts, 24 Oct 2026): with 256-bit hashes a different person's
-// face scores 0.55 to 0.61 (random is 0.50), the same face after crop, screenshot, body swap or tilt scores 0.83 or more.
-export const THRESHOLDS = { derived: 0.8, likely: 0.7 } as const;
 
 type Side = { cldPhash?: string; full: Fingerprint; face?: Fingerprint };
 
@@ -58,11 +56,6 @@ export function scorePair(suspect: PhotoPrints, candidate: PhotoPrints): MatchSc
   return { ...normal, mirrored: false };
 }
 
-export function verdictFor(score: number): Verdict {
-  if (score >= THRESHOLDS.derived) return "derived";
-  if (score >= THRESHOLDS.likely) return "likely";
-  return "none";
-}
 
 export function bestMatch(suspect: PhotoPrints, vault: PhotoPrints[]): MatchResult {
   let best: MatchScore | null = null;

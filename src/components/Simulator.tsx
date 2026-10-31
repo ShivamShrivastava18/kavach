@@ -2,6 +2,8 @@
 
 import Link from "next/link";
 import { useState } from "react";
+import { ScanFrame } from "./ScanFrame";
+import { SIMULATIONS } from "@/lib/simulate";
 
 type Result = { kind: string; label: string; caseId?: string; verdict?: string; score?: number; error?: string };
 
@@ -60,6 +62,7 @@ export function Simulator({ publicId, thumb }: { publicId: string; thumb: string
         </button>
       </div>
       {error && <p className="mt-3 text-sm text-danger">{error}</p>}
+      {busy && <ScanFrame src={thumb} stages={SIMULATIONS.map((s) => s.label)} className="mt-5 max-w-[220px]" />}
       {results && (
         <>
           <p className="mt-5 text-sm">
@@ -69,15 +72,22 @@ export function Simulator({ publicId, thumb }: { publicId: string; thumb: string
             {results.map((x, i) => {
               const v = x.verdict ? VERDICT[x.verdict] : undefined;
               return (
-                <li key={x.kind} className="rise flex items-center justify-between gap-3 rounded-xl border border-line px-4 py-3" style={{ ["--i" as string]: i }}>
-                  <span className="text-sm">{x.label}</span>
-                  {x.caseId && v ? (
-                    <Link href={`/case/${x.caseId}`} className={`chip ${v.cls} hover:border-fg`}>
-                      {v.text} {Math.round((x.score ?? 0) * 100)}%
-                    </Link>
-                  ) : (
-                    <span className="chip border-danger text-danger">{x.error ?? "failed"}</span>
-                  )}
+                <li key={x.kind} className="rise flex flex-col gap-2 rounded-xl border border-line px-4 py-3" style={{ ["--i" as string]: i }}>
+                  <div className="flex items-center justify-between gap-3">
+                    <span className="text-sm">{x.label}</span>
+                    {x.caseId && v ? (
+                      <Link href={`/case/${x.caseId}`} className={`chip ${v.cls} hover:border-fg`}>
+                        {v.text} {Math.round((x.score ?? 0) * 100)}%
+                      </Link>
+                    ) : (
+                      <span className="chip border-danger text-danger">{x.error ?? "failed"}</span>
+                    )}
+                  </div>
+                  <div className="relative h-1 overflow-hidden rounded-full bg-raised">
+                    <div className="absolute inset-y-0 left-[70%] w-px bg-muted/60" />
+                    <div className="absolute inset-y-0 left-[80%] w-px bg-muted/60" />
+                    <div className="h-full rounded-full bg-accent" style={{ width: `${Math.round((x.score ?? 0) * 100)}%`, opacity: x.verdict === "derived" ? 0.9 : 0.5 }} />
+                  </div>
                 </li>
               );
             })}

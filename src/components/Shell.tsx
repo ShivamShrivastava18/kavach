@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { ShieldMark } from "./ShieldMark";
-
-export const TRUST = ["Originals are never served", "No face recognition", "Delete everything in one click"] as const;
+import { TRUST } from "./trust";
+export { TRUST };
 
 export function Shell({ demo, children }: { demo: boolean; children: React.ReactNode }) {
   return (

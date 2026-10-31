@@ -1,10 +1,11 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { UploadDrop } from "@/components/UploadDrop";
 import { GuideStrip } from "@/components/GuideStrip";
+import { ScanFrame } from "@/components/ScanFrame";
 import { downscale } from "@/lib/client/downscale";
 
 const PLATFORMS = ["Instagram", "X", "WhatsApp", "Telegram", "Facebook", "Snapchat", "Other"];
@@ -15,12 +16,15 @@ export default function CheckPage() {
   const [platform, setPlatform] = useState("Instagram");
   const [postUrl, setPostUrl] = useState("");
   const [file, setFile] = useState<File | null>(null);
+  const preview = useMemo(() => (file ? URL.createObjectURL(file) : null), [file]);
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
 
   useEffect(() => {
     fetch("/api/profile").then(async (r) => setMe(r.ok ? await r.json() : null));
   }, []);
+
+
 
   async function run() {
     setError(null);
@@ -81,13 +85,17 @@ export default function CheckPage() {
         )}
       </div>
       <div className="flex flex-col gap-5">
-        <UploadDrop
-          label={file ? file.name : "Drop the image"}
-          hint={me.demo ? "Uploads are off in demo mode. Press Check." : "Screenshot or saved image, up to 4 MB."}
-          disabled={me.demo}
-          busy={busy}
-          onFile={setFile}
-        />
+        {busy ? (
+          <ScanFrame src={preview ?? undefined} blur stages={["Storing privately", "Detecting faces", "Hashing 256 bits", `Comparing with your ${me.photos} photo${me.photos === 1 ? "" : "s"}`, "Mirrored pass", "Writing the case"]} />
+        ) : (
+          <UploadDrop
+            label={file ? file.name : "Drop the image"}
+            hint={me.demo ? "Uploads are off in demo mode. Press Check." : "Screenshot or saved image, up to 4 MB. You will only ever see it blurred."}
+            disabled={me.demo}
+            busy={busy}
+            onFile={setFile}
+          />
+        )}
         <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
           <div className="flex flex-col gap-2">
             <label className="label" htmlFor="platform">

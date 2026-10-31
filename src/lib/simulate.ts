@@ -1,4 +1,4 @@
-import { encodeOverlayText } from "./cloudinary";
+import { encodeOverlayText } from "./overlay";
 
 /**
  * The edits a harasser makes to a stolen photo, as Cloudinary transformations on the private asset.

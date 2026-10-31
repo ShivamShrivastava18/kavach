@@ -59,9 +59,8 @@ export async function uploadPrivate(
   };
 }
 
-export function encodeOverlayText(text: string): string {
-  return encodeURIComponent(text).replace(/%2F/gi, "%252F").replace(/,/g, "%252C").replace(/%2C/gi, "%252C");
-}
+import { encodeOverlayText } from "./overlay";
+export { encodeOverlayText };
 
 export function blurTransformation(stamp: { caseId: string; sha256: string; at: string }): string {
   const text = encodeOverlayText(`KAVACH EVIDENCE  case ${stamp.caseId}  sha256 ${stamp.sha256.slice(0, 16)}  ${stamp.at}`);

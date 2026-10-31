@@ -3,13 +3,15 @@
 import { useState } from "react";
 import type { Drafts } from "@/lib/types";
 
-const TABS = [
-  { key: "platform", label: "Platform" },
-  { key: "portal", label: "Cyber Crime Portal" },
+export const TABS = [
+  { key: "platform", label: "Platform", why: "Goes to the platform's grievance officer. They host the image and must remove it within 2 hours of receiving this." },
+  { key: "portal", label: "Cyber Crime Portal", why: "Goes to cybercrime.gov.in, the national police portal. Removal is the platform's job; finding who did it is the police's." },
 ] as const;
 
-export function ComplaintTabs({ drafts, caseId }: { drafts: Drafts | null; caseId: string }) {
-  const [tab, setTab] = useState<(typeof TABS)[number]["key"]>("platform");
+export type ComplaintTab = (typeof TABS)[number]["key"];
+
+export function ComplaintTabs({ drafts, caseId, tab, onTab }: { drafts: Drafts | null; caseId: string; tab: ComplaintTab; onTab: (t: ComplaintTab) => void }) {
+  const setTab = onTab;
   const [copied, setCopied] = useState(false);
   const text = drafts?.[tab] ?? "";
 
@@ -30,10 +32,10 @@ export function ComplaintTabs({ drafts, caseId }: { drafts: Drafts | null; caseI
 
   return (
     <div className="flex flex-col gap-3">
-      <div className="flex items-center justify-between gap-3">
+      <div className="flex flex-wrap items-center justify-between gap-3">
         <div className="flex gap-1 rounded-full border border-line p-1 text-sm">
           {TABS.map((t) => (
-            <button key={t.key} onClick={() => setTab(t.key)} className={`rounded-full px-4 py-1.5 transition-colors ${tab === t.key ? "bg-fg text-bg" : "text-muted hover:text-fg"}`}>
+            <button key={t.key} onClick={() => setTab(t.key)} title={t.why} className={`rounded-full px-4 py-1.5 transition-colors ${tab === t.key ? "bg-fg text-bg" : "text-muted hover:text-fg"}`}>
               {t.label}
             </button>
           ))}
@@ -47,6 +49,7 @@ export function ComplaintTabs({ drafts, caseId }: { drafts: Drafts | null; caseI
           </button>
         </div>
       </div>
+      <p className="text-xs text-muted">{TABS.find((t) => t.key === tab)?.why}</p>
       {drafts ? (
         <pre className="max-h-[32rem] overflow-auto whitespace-pre-wrap rounded-2xl border border-line bg-raised p-5 font-sans text-sm leading-relaxed">{text}</pre>
       ) : (
