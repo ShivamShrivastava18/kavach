@@ -7,7 +7,7 @@ import { GuideStrip } from "@/components/GuideStrip";
 import { Simulator } from "@/components/Simulator";
 import { downscale } from "@/lib/client/downscale";
 
-type Me = { id: string; name: string; demo: boolean; photos: number; sample?: boolean };
+type Me = { id: string; name: string; demo: boolean; photos: number; sample?: boolean; lastCaseId?: string };
 type Photo = { publicId: string; uploadedAt: string; sha256: string; faces: number; quality?: number; thumb: string };
 
 export default function VaultPage() {
@@ -158,7 +158,7 @@ export default function VaultPage() {
   const first = photos.find((p) => p.faces > 0) ?? photos[0];
   return (
     <div className="pt-6 md:pt-12">
-      {me.sample && <GuideStrip step="vault" />}
+      {me.sample && <GuideStrip step="vault" caseId={me.lastCaseId} />}
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
           <p className="label">Vault</p>
@@ -168,7 +168,12 @@ export default function VaultPage() {
           </p>
           {me.sample && <p className="mt-2 max-w-[52ch] text-sm text-muted">These are generated portraits, not a real person. Add a photo of yourself to try the matching on your own face; everything you add is private and deleted with the sample.</p>}
         </div>
-        <div className="flex gap-2">
+        <div className="flex flex-wrap gap-2">
+          {me.lastCaseId && (
+            <Link href={`/case/${me.lastCaseId}`} className="btn-ghost">
+              Open the last case
+            </Link>
+          )}
           <Link href="/check" className="btn-accent">
             Check an image
           </Link>

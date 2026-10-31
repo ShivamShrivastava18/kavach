@@ -101,7 +101,7 @@ export default function CasePage({ params }: { params: Promise<{ id: string }> }
 
   return (
     <div className="pt-6 md:pt-12">
-      {data.sample && <GuideStrip step={drafts ? "complaint" : "case"} />}
+      {data.sample && <GuideStrip step={drafts ? "complaint" : "case"} caseId={c.id} />}
       <p className="label">
         Case <span className="font-mono normal-case tracking-normal text-fg">{c.id}</span>
         {c.simulated && <span className="ml-3 chip normal-case tracking-normal">simulated: {c.simulated}</span>}

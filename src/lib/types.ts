@@ -21,6 +21,8 @@ export type Profile = {
   vault: VaultPhoto[];
   /** True for the guided-demo shield: sample portraits, random PIN, deletable in one click. */
   sample?: boolean;
+  /** The most recent case, so the vault and the guide strip can link back to it. */
+  lastCaseId?: string;
 };
 
 export type Drafts = {

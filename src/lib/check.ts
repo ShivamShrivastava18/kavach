@@ -75,5 +75,9 @@ export async function runCheck(profile: Profile, buf: Buffer, opts: CheckOptions
     simulated: opts.simulated,
   };
   await saveCase(record);
+  if (!opts.simulated) {
+    profile.lastCaseId = record.id;
+    await saveProfile(profile);
+  }
   return record;
 }

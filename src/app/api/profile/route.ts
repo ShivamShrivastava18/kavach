@@ -57,7 +57,7 @@ export async function GET() {
   const { currentProfile } = await import("@/lib/api");
   const p = await currentProfile();
   if (!p) return fail(401, "No shield open.");
-  return NextResponse.json({ id: p.id, name: p.name, demo: isDemoMode(), photos: p.vault.length, sample: Boolean(p.sample) });
+  return NextResponse.json({ id: p.id, name: p.name, demo: isDemoMode(), photos: p.vault.length, sample: Boolean(p.sample), lastCaseId: p.lastCaseId });
 }
 
 /** Closes the shield. With ?purge=1 it also deletes every photo, exhibit and record the shield owns. */

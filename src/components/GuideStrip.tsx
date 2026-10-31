@@ -11,7 +11,7 @@ const STEPS = [
 ] as const;
 
 /** Shown on a sample shield: where the judge is in the three-step story and what to try next. */
-export function GuideStrip({ step }: { step: "vault" | "case" | "complaint" }) {
+export function GuideStrip({ step, caseId }: { step: "vault" | "case" | "complaint"; caseId?: string }) {
   const router = useRouter();
   const [busy, setBusy] = useState(false);
   const active = STEPS.findIndex((s) => s.key === step);
@@ -31,7 +31,13 @@ export function GuideStrip({ step }: { step: "vault" | "case" | "complaint" }) {
           {STEPS.map((s, i) => (
             <li key={s.key} className={`flex items-center gap-2 ${i <= active ? "text-fg" : "text-muted"}`}>
               <span className={`font-mono text-xs ${i <= active ? "text-accent" : ""}`}>0{i + 1}</span>
-              <span className="font-medium">{s.label}</span>
+              {s.key === "vault" ? (
+                <Link href="/vault" className="font-medium underline-offset-4 hover:underline">{s.label}</Link>
+              ) : caseId ? (
+                <Link href={`/case/${caseId}`} className="font-medium underline-offset-4 hover:underline">{s.label}</Link>
+              ) : (
+                <span className="font-medium">{s.label}</span>
+              )}
               <span className="hidden text-muted sm:inline">{s.detail}</span>
             </li>
           ))}

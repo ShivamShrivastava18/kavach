@@ -11,7 +11,7 @@ const PLATFORMS = ["Instagram", "X", "WhatsApp", "Telegram", "Facebook", "Snapch
 
 export default function CheckPage() {
   const router = useRouter();
-  const [me, setMe] = useState<{ name: string; demo: boolean; photos: number; sample?: boolean } | null | undefined>(undefined);
+  const [me, setMe] = useState<{ name: string; demo: boolean; photos: number; sample?: boolean; lastCaseId?: string } | null | undefined>(undefined);
   const [platform, setPlatform] = useState("Instagram");
   const [postUrl, setPostUrl] = useState("");
   const [file, setFile] = useState<File | null>(null);
@@ -61,7 +61,7 @@ export default function CheckPage() {
 
   return (
     <div className="pt-6 md:pt-12">
-      {me.sample && <GuideStrip step="case" />}
+      {me.sample && <GuideStrip step="case" caseId={me.lastCaseId} />}
     <div className="grid grid-cols-1 gap-10 md:grid-cols-[2fr_3fr]">
       <div>
         <p className="label">Check an image</p>
