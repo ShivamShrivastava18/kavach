@@ -6,6 +6,10 @@ Live: https://kavach-flame-gamma.vercel.app · Demo video: https://youtu.be/p4ad
 
 Built in one night for SheBuilds Hacktoberfest HackDays 2026. Cloudinary does the heavy lifting. Gemma 4 writes the complaints. The fingerprinting is open source and lives in this repo.
 
+## Data flow
+
+![Kavach data flow: her photo and the suspect become private Cloudinary assets with fingerprints; the server scores them, writes the case, serves only a blurred derivative, asks Gemma 4 for the narrative, templates the complaints and zips the bundle](docs/screenshots/data-flow.png)
+
 ## Screens
 
 ![Home: one click to a solved case](docs/screenshots/01-home.png)

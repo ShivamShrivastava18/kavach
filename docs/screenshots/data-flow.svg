@@ -1,0 +1,144 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 740" width="1400" height="740" role="img" aria-label="Kavach data flow: her photo and the suspect image both become private Cloudinary assets with fingerprints; the server scores them, writes the case, serves only a blurred derivative, asks Gemma 4 for the narrative, templates the complaints and zips the bundle.">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" fill="#9a998f"/>
+    </marker>
+    <marker id="arrowAccent" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" fill="#d99a3c"/>
+    </marker>
+  </defs>
+  <rect width="1400" height="740" fill="#0c0c0e"/>
+
+  <!-- lanes -->
+  <g font-family="Geist, ui-sans-serif, system-ui, sans-serif" font-size="12" fill="#9a998f" letter-spacing="2">
+    <text x="40" y="52">BROWSER</text>
+    <text x="40" y="242">KAVACH SERVER (Next.js on Vercel)</text>
+    <text x="40" y="522">CLOUDINARY, PRIVATE (no database)</text>
+  </g>
+  <line x1="40" y1="220" x2="1360" y2="220" stroke="#26262c"/>
+  <line x1="40" y1="500" x2="1360" y2="500" stroke="#26262c"/>
+
+  <!-- browser row -->
+  <g font-family="Geist, ui-sans-serif, system-ui, sans-serif" font-size="14" fill="#f2f1ec">
+    <rect x="60" y="80" width="170" height="64" rx="14" fill="#131317" stroke="#26262c"/>
+    <text x="145" y="106" text-anchor="middle">Her photo</text>
+    <text x="145" y="126" text-anchor="middle" font-size="12" fill="#9a998f">register</text>
+
+    <rect x="340" y="80" width="170" height="64" rx="14" fill="#131317" stroke="#26262c"/>
+    <text x="425" y="106" text-anchor="middle">Suspect image</text>
+    <text x="425" y="126" text-anchor="middle" font-size="12" fill="#9a998f">check, once</text>
+
+    <rect x="900" y="80" width="200" height="64" rx="14" fill="#131317" stroke="#d99a3c"/>
+    <text x="1000" y="106" text-anchor="middle">Blurred exhibit</text>
+    <text x="1000" y="126" text-anchor="middle" font-size="12" fill="#9a998f">the only image she sees</text>
+
+    <rect x="1160" y="80" width="200" height="64" rx="14" fill="#131317" stroke="#26262c"/>
+    <text x="1260" y="106" text-anchor="middle">Verdict, complaints, zip</text>
+    <text x="1260" y="126" text-anchor="middle" font-size="12" fill="#9a998f">case page</text>
+  </g>
+
+  <!-- server row -->
+  <g font-family="Geist, ui-sans-serif, system-ui, sans-serif" font-size="14" fill="#f2f1ec">
+    <rect x="60" y="300" width="170" height="80" rx="14" fill="#131317" stroke="#26262c"/>
+    <text x="145" y="328" text-anchor="middle">Fingerprint</text>
+    <text x="145" y="348" text-anchor="middle" font-size="12" fill="#9a998f">face crop, 256-bit</text>
+    <text x="145" y="364" text-anchor="middle" font-size="12" fill="#9a998f">pHash + dHash</text>
+
+    <rect x="340" y="300" width="170" height="80" rx="14" fill="#131317" stroke="#26262c"/>
+    <text x="425" y="328" text-anchor="middle">Fingerprint</text>
+    <text x="425" y="348" text-anchor="middle" font-size="12" fill="#9a998f">same hashes,</text>
+    <text x="425" y="364" text-anchor="middle" font-size="12" fill="#9a998f">plus mirrored pass</text>
+
+    <rect x="580" y="300" width="170" height="80" rx="14" fill="#131317" stroke="#d99a3c"/>
+    <text x="665" y="328" text-anchor="middle">Score</text>
+    <text x="665" y="348" text-anchor="middle" font-size="12" fill="#9a998f">vs every vault print</text>
+    <text x="665" y="364" text-anchor="middle" font-size="12" fill="#9a998f">80 derived · 70 likely</text>
+
+    <rect x="820" y="300" width="170" height="80" rx="14" fill="#131317" stroke="#26262c"/>
+    <text x="905" y="328" text-anchor="middle">Gemma 4</text>
+    <text x="905" y="348" text-anchor="middle" font-size="12" fill="#9a998f">narrative + severity</text>
+    <text x="905" y="364" text-anchor="middle" font-size="12" fill="#9a998f">name, link redacted</text>
+
+    <rect x="1060" y="300" width="170" height="80" rx="14" fill="#131317" stroke="#26262c"/>
+    <text x="1145" y="328" text-anchor="middle">Templates</text>
+    <text x="1145" y="348" text-anchor="middle" font-size="12" fill="#9a998f">platform + portal,</text>
+    <text x="1145" y="364" text-anchor="middle" font-size="12" fill="#9a998f">law never from a model</text>
+
+    <rect x="1260" y="300" width="100" height="80" rx="14" fill="#131317" stroke="#26262c"/>
+    <text x="1310" y="334" text-anchor="middle">Bundle</text>
+    <text x="1310" y="354" text-anchor="middle" font-size="12" fill="#9a998f">zip</text>
+  </g>
+
+  <!-- cloudinary row -->
+  <g font-family="Geist, ui-sans-serif, system-ui, sans-serif" font-size="14" fill="#f2f1ec">
+    <rect x="60" y="560" width="170" height="80" rx="14" fill="#131317" stroke="#26262c"/>
+    <text x="145" y="588" text-anchor="middle">Vault asset</text>
+    <text x="145" y="608" text-anchor="middle" font-size="12" fill="#9a998f">type: private</text>
+    <text x="145" y="624" text-anchor="middle" font-size="12" fill="#9a998f">pHash, face box</text>
+
+    <rect x="340" y="560" width="170" height="80" rx="14" fill="#131317" stroke="#26262c"/>
+    <text x="425" y="588" text-anchor="middle">Exhibit asset</text>
+    <text x="425" y="608" text-anchor="middle" font-size="12" fill="#9a998f">type: private</text>
+    <text x="425" y="624" text-anchor="middle" font-size="12" fill="#9a998f">moderation labels</text>
+
+    <rect x="580" y="560" width="170" height="80" rx="14" fill="#131317" stroke="#26262c"/>
+    <text x="665" y="588" text-anchor="middle">profile.json</text>
+    <text x="665" y="608" text-anchor="middle" font-size="12" fill="#9a998f">raw, private</text>
+    <text x="665" y="624" text-anchor="middle" font-size="12" fill="#9a998f">prints of every photo</text>
+
+    <rect x="820" y="560" width="170" height="80" rx="14" fill="#131317" stroke="#26262c"/>
+    <text x="905" y="588" text-anchor="middle">case.json</text>
+    <text x="905" y="608" text-anchor="middle" font-size="12" fill="#9a998f">raw, private</text>
+    <text x="905" y="624" text-anchor="middle" font-size="12" fill="#9a998f">score, hashes, drafts</text>
+
+    <rect x="1060" y="560" width="300" height="80" rx="14" fill="#131317" stroke="#d99a3c"/>
+    <text x="1210" y="588" text-anchor="middle">Signed transformation</text>
+    <text x="1210" y="608" text-anchor="middle" font-size="12" fill="#9a998f">pixelate faces + blur + evidence stamp</text>
+    <text x="1210" y="624" text-anchor="middle" font-size="12" fill="#9a998f">the original is never a URL anyone gets</text>
+  </g>
+
+  <!-- arrows -->
+  <g stroke="#9a998f" stroke-width="1.5" fill="none" marker-end="url(#arrow)">
+    <path d="M100 144 V558"/>
+    <path d="M190 558 V382"/>
+    <path d="M145 380 V420 H300 V690 H665 V642"/>
+    <path d="M380 144 V558"/>
+    <path d="M470 558 V382"/>
+    <path d="M510 340 H578"/>
+    <path d="M665 558 V382"/>
+    <path d="M750 360 H785 V600 H818"/>
+    <path d="M905 558 V382"/>
+    <path d="M990 340 H1058"/>
+    <path d="M1230 340 H1258"/>
+    <path d="M1310 300 V146"/>
+  </g>
+  <g stroke="#d99a3c" stroke-width="1.5" fill="none" marker-end="url(#arrowAccent)">
+    <path d="M425 640 V712 H1210 V642"/>
+    <path d="M1030 558 V146"/>
+    <path d="M1000 558 V382"/>
+  </g>
+
+  <!-- arrow labels -->
+  <g font-family="GeistMono, ui-monospace, Menlo, monospace" font-size="11" fill="#9a998f">
+    <text x="108" y="200">uploads, private</text>
+    <text x="198" y="470">phash + face box</text>
+    <text x="308" y="560">prints</text>
+    <text x="388" y="200">uploads, private</text>
+    <text x="478" y="470">phash + face box</text>
+    <text x="520" y="330">prints</text>
+    <text x="673" y="470">vault prints</text>
+    <text x="793" y="520">writes</text>
+    <text x="897" y="470" text-anchor="end">facts, redacted</text>
+    <text x="996" y="330">narrative</text>
+    <text x="1318" y="230">download</text>
+    <text x="1040" y="200" fill="#d99a3c">via /api/img proxy, 10-min token</text>
+    <text x="1008" y="500" fill="#d99a3c">blurred PNG only</text>
+    <text x="440" y="704" fill="#d99a3c">derived on the fly, URL signed by the server</text>
+  </g>
+
+  <!-- title -->
+  <g font-family="Geist, ui-sans-serif, system-ui, sans-serif">
+    <text x="1360" y="52" text-anchor="end" font-size="12" fill="#9a998f" letter-spacing="2">KAVACH · DATA FLOW</text>
+    <text x="1360" y="728" text-anchor="end" font-size="11" fill="#9a998f" font-family="GeistMono, ui-monospace, Menlo, monospace">amber = the only paths an image takes out of private storage, and both are blurred</text>
+  </g>
+</svg>

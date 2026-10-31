@@ -63,7 +63,9 @@
 | Testing | vitest (64 tests), end-to-end smoke against production, real-portrait benchmark, Playwright | |
 | Video | Playwright recording, Remotion, Gemini TTS | |
 
-**Data flow:** photo → private asset + prints in profile.json → suspect → private asset + prints → score → case.json → blurred derivative via server proxy → Gemma narrative → templated complaints → zip bundle.
+**Data flow.** Amber marks the only two paths an image takes out of private storage, and both are blurred.
+
+![Kavach data flow](https://raw.githubusercontent.com/ShivamShrivastava18/kavach/main/docs/screenshots/data-flow.png)
 
 ## 6. Feature Tracker
 
