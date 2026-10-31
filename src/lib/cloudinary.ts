@@ -133,3 +133,9 @@ export async function getJson<T>(publicId: string): Promise<T | null> {
 export async function deleteAsset(publicId: string, resourceType: "image" | "raw" = "image"): Promise<void> {
   await cld.uploader.destroy(publicId, { type: "private", resource_type: resourceType, invalidate: true });
 }
+
+/** Removes every asset under a profile: vault photos, exhibits (private images) and the JSON records (raw). */
+export async function purgePrefix(prefix: string): Promise<void> {
+  await cld.api.delete_resources_by_prefix(prefix, { type: "private", resource_type: "image" });
+  await cld.api.delete_resources_by_prefix(prefix, { type: "private", resource_type: "raw" });
+}

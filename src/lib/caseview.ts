@@ -20,6 +20,7 @@ export function caseView(c: CaseRecord) {
     match: c.match,
     matchedPhoto: c.matchedPhoto,
     drafts: c.drafts,
+    simulated: c.simulated,
     exhibitBlur: `/api/img?t=${signImg(c.exhibitPublicId, "blur", stampFor(c), TOKEN_TTL)}`,
     matchedThumb: c.matchedPhoto ? `/api/img?t=${signImg(c.matchedPhoto.publicId, "thumb", undefined, TOKEN_TTL)}` : undefined,
   };

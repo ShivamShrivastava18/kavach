@@ -4,13 +4,14 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { UploadDrop } from "@/components/UploadDrop";
+import { GuideStrip } from "@/components/GuideStrip";
 import { downscale } from "@/lib/client/downscale";
 
 const PLATFORMS = ["Instagram", "X", "WhatsApp", "Telegram", "Facebook", "Snapchat", "Other"];
 
 export default function CheckPage() {
   const router = useRouter();
-  const [me, setMe] = useState<{ name: string; demo: boolean; photos: number } | null | undefined>(undefined);
+  const [me, setMe] = useState<{ name: string; demo: boolean; photos: number; sample?: boolean } | null | undefined>(undefined);
   const [platform, setPlatform] = useState("Instagram");
   const [postUrl, setPostUrl] = useState("");
   const [file, setFile] = useState<File | null>(null);
@@ -59,7 +60,9 @@ export default function CheckPage() {
     );
 
   return (
-    <div className="grid grid-cols-1 gap-10 pt-6 md:grid-cols-[2fr_3fr] md:pt-16">
+    <div className="pt-6 md:pt-12">
+      {me.sample && <GuideStrip step="case" />}
+    <div className="grid grid-cols-1 gap-10 md:grid-cols-[2fr_3fr]">
       <div>
         <p className="label">Check an image</p>
         <h1 className="mt-3 text-3xl font-semibold tracking-tighter md:text-5xl">Drop it here. You will not have to look at it.</h1>
@@ -67,6 +70,15 @@ export default function CheckPage() {
           The image goes straight into private storage. Kavach blurs it, fingerprints it, and compares it with your {me.photos} registered photo{me.photos === 1 ? "" : "s"}.
         </p>
         {me.demo && <p className="mt-4 text-sm text-accent">Demo mode: pressing Check opens Priya&apos;s seeded case.</p>}
+        {!me.demo && (
+          <p className="mt-4 text-sm text-muted">
+            No morph at hand?{" "}
+            <Link href="/vault" className="underline decoration-line underline-offset-4 hover:text-fg">
+              Let Kavach make the usual edits of your photo
+            </Link>{" "}
+            and check each one.
+          </p>
+        )}
       </div>
       <div className="flex flex-col gap-5">
         <UploadDrop
@@ -99,6 +111,7 @@ export default function CheckPage() {
           {busy ? "Comparing" : "Check"}
         </button>
       </div>
+    </div>
     </div>
   );
 }

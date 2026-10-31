@@ -3,9 +3,11 @@
 import { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
 import { UploadDrop } from "@/components/UploadDrop";
+import { GuideStrip } from "@/components/GuideStrip";
+import { Simulator } from "@/components/Simulator";
 import { downscale } from "@/lib/client/downscale";
 
-type Me = { id: string; name: string; demo: boolean; photos: number };
+type Me = { id: string; name: string; demo: boolean; photos: number; sample?: boolean };
 type Photo = { publicId: string; uploadedAt: string; sha256: string; faces: number; quality?: number; thumb: string };
 
 export default function VaultPage() {
@@ -153,8 +155,10 @@ export default function VaultPage() {
     );
   }
 
+  const first = photos.find((p) => p.faces > 0) ?? photos[0];
   return (
     <div className="pt-6 md:pt-12">
+      {me.sample && <GuideStrip step="vault" />}
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
           <p className="label">Vault</p>
@@ -162,6 +166,7 @@ export default function VaultPage() {
           <p className="mt-2 font-mono text-xs text-muted">
             shield id <span className="text-fg">{me.id}</span>
           </p>
+          {me.sample && <p className="mt-2 max-w-[52ch] text-sm text-muted">These are generated portraits, not a real person. Add a photo of yourself to try the matching on your own face; everything you add is private and deleted with the sample.</p>}
         </div>
         <div className="flex gap-2">
           <Link href="/check" className="btn-accent">
@@ -185,7 +190,7 @@ export default function VaultPage() {
           {error && <p className="mt-3 text-sm text-danger">{error}</p>}
           {notice && <p className="mt-3 text-sm text-accent">{notice}</p>}
           <p className="mt-4 text-xs text-muted">
-            Stored as a Cloudinary private asset. Fingerprinted with Cloudinary pHash plus Kavach&apos;s own face hashes.
+            Stored as a Cloudinary private asset, never served unblurred to anyone. Fingerprinted with Cloudinary pHash plus Kavach&apos;s own face hashes. No face recognition: Kavach matches your photo, not your identity.
           </p>
         </div>
         <div>
@@ -212,6 +217,7 @@ export default function VaultPage() {
           )}
         </div>
       </div>
+      {first && !me.demo && <Simulator key={first.publicId} publicId={first.publicId} thumb={first.thumb} />}
     </div>
   );
 }

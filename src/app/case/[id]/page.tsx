@@ -5,6 +5,7 @@ import Link from "next/link";
 import type { CaseView } from "@/lib/caseview";
 import type { Drafts } from "@/lib/types";
 import { ComplaintTabs } from "@/components/ComplaintTabs";
+import { GuideStrip } from "@/components/GuideStrip";
 
 const VERDICT_LINE: Record<string, (d?: string) => string> = {
   derived: (d) => `Made from your photo uploaded ${d ?? "on record"}.`,
@@ -27,7 +28,7 @@ function fmtDate(iso?: string) {
 
 export default function CasePage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params);
-  const [data, setData] = useState<{ case: CaseView; victimName: string } | null | undefined>(undefined);
+  const [data, setData] = useState<{ case: CaseView; victimName: string; sample?: boolean } | null | undefined>(undefined);
   const [drafts, setDrafts] = useState<Drafts | null>(null);
   const [draftError, setDraftError] = useState<string | null>(null);
   const [originalMsg, setOriginalMsg] = useState<string | null>(null);
@@ -52,7 +53,7 @@ export default function CasePage({ params }: { params: Promise<{ id: string }> }
         if (!cancelled) setData(null);
         return;
       }
-      const d = (await r.json()) as { case: CaseView; victimName: string };
+      const d = (await r.json()) as { case: CaseView; victimName: string; sample?: boolean };
       if (cancelled) return;
       setData(d);
       if (d.case.drafts) {
@@ -100,8 +101,10 @@ export default function CasePage({ params }: { params: Promise<{ id: string }> }
 
   return (
     <div className="pt-6 md:pt-12">
+      {data.sample && <GuideStrip step={drafts ? "complaint" : "case"} />}
       <p className="label">
         Case <span className="font-mono normal-case tracking-normal text-fg">{c.id}</span>
+        {c.simulated && <span className="ml-3 chip normal-case tracking-normal">simulated: {c.simulated}</span>}
       </p>
       <h1
         className={`rise mt-3 max-w-[18ch] text-3xl font-semibold tracking-tighter leading-[1.05] md:text-5xl ${verdict === "none" ? "text-muted" : ""}`}
@@ -193,6 +196,9 @@ export default function CasePage({ params }: { params: Promise<{ id: string }> }
             </div>
             {originalMsg && <p className="mt-2 text-xs text-muted">{originalMsg}</p>}
             <p className="mt-2 text-xs text-muted">The bundle holds the evidence record, the stamped blurred exhibit and both drafts. The original stays in private storage.</p>
+            <Link href="/vault" className="mt-6 inline-block text-sm text-muted underline decoration-line underline-offset-4 hover:text-fg">
+              Back to the vault
+            </Link>
           </div>
         </div>
         <div>

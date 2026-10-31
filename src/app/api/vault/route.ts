@@ -1,13 +1,10 @@
 import { NextResponse } from "next/server";
-import { createHash } from "node:crypto";
 import { currentProfile, fail, readImageField } from "@/lib/api";
-import { deleteAsset, uploadPrivate } from "@/lib/cloudinary";
+import { registerPhoto } from "@/lib/check";
+import { deleteAsset } from "@/lib/cloudinary";
 import { isDemoMode } from "@/lib/env";
-import { computePrints } from "@/lib/prints";
 import { saveProfile } from "@/lib/store";
-import type { VaultPhoto } from "@/lib/types";
 import { photoView } from "@/lib/caseview";
-
 
 export async function GET() {
   const profile = await currentProfile();
@@ -23,29 +20,14 @@ export async function POST(req: Request) {
   const img = await readImageField(form);
   if ("error" in img) return fail(400, img.error);
 
-  const sha256 = createHash("sha256").update(img.buf).digest("hex");
-  let up;
+  let photo;
   try {
-    up = await uploadPrivate(img.buf, `kavach/${profile.id}/vault`);
+    photo = await registerPhoto(profile, img.buf);
   } catch (e) {
     console.error("[kavach] vault upload failed:", (e as Error).message);
     return fail(502, "Storage is not responding. Try again in a moment.");
   }
-  const prints = await computePrints(img.buf, up.faces, up.phash);
-  const photo: VaultPhoto = {
-    publicId: up.publicId,
-    uploadedAt: new Date().toISOString(),
-    sha256,
-    width: up.width,
-    height: up.height,
-    cldPhash: up.phash,
-    faces: up.faces,
-    quality: up.quality,
-    prints,
-  };
-  profile.vault.push(photo);
-  await saveProfile(profile);
-  return NextResponse.json({ photo: photoView(photo), warning: up.faces.length ? undefined : "No face found. Matching will use the whole image." });
+  return NextResponse.json({ photo: photoView(photo), warning: photo.faces.length ? undefined : "No face found. Matching will use the whole image." });
 }
 
 export async function DELETE(req: Request) {

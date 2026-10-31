@@ -57,11 +57,21 @@ export async function GET() {
   const { currentProfile } = await import("@/lib/api");
   const p = await currentProfile();
   if (!p) return fail(401, "No shield open.");
-  return NextResponse.json({ id: p.id, name: p.name, demo: isDemoMode(), photos: p.vault.length });
+  return NextResponse.json({ id: p.id, name: p.name, demo: isDemoMode(), photos: p.vault.length, sample: Boolean(p.sample) });
 }
 
-export async function DELETE() {
-  const res = NextResponse.json({ ok: true });
+/** Closes the shield. With ?purge=1 it also deletes every photo, exhibit and record the shield owns. */
+export async function DELETE(req: Request) {
+  const purge = new URL(req.url).searchParams.get("purge") === "1";
+  if (purge && !isDemoMode()) {
+    const { currentProfile } = await import("@/lib/api");
+    const p = await currentProfile();
+    if (p) {
+      const { purgePrefix } = await import("@/lib/cloudinary");
+      await purgePrefix(`kavach/${p.id}/`).catch((e) => console.error("[kavach] purge failed:", (e as Error).message));
+    }
+  }
+  const res = NextResponse.json({ ok: true, purged: purge });
   res.cookies.set(SESSION_COOKIE, "", { path: "/", maxAge: 0 });
   return res;
 }

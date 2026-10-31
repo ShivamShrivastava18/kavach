@@ -10,5 +10,5 @@ export async function GET(_req: Request, ctx: { params: Promise<{ id: string }> 
   const { id } = await ctx.params;
   const c = await getCase(profile.id, id);
   if (!c) return fail(404, "No such case.");
-  return NextResponse.json({ case: caseView(c), victimName: profile.name });
+  return NextResponse.json({ case: caseView(c), victimName: profile.name, sample: Boolean(profile.sample) });
 }

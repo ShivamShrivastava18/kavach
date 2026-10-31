@@ -19,6 +19,8 @@ export type Profile = {
   salt: string;
   createdAt: string;
   vault: VaultPhoto[];
+  /** True for the guided-demo shield: sample portraits, random PIN, deletable in one click. */
+  sample?: boolean;
 };
 
 export type Drafts = {
@@ -47,4 +49,6 @@ export type CaseRecord = {
   match: MatchResult;
   matchedPhoto?: { publicId: string; uploadedAt: string };
   drafts?: Drafts;
+  /** Set when the exhibit was derived by Kavach itself to show what a harasser's edit scores (see lib/simulate). */
+  simulated?: string;
 };

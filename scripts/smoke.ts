@@ -78,8 +78,24 @@ async function main() {
   ok(other.status === 401, "case refused without session");
 
   if (live && !profBody.demo) {
-    const del = await call("/api/profile", { method: "DELETE" });
-    ok(del.ok, "smoke shield deleted");
+    const del = await call("/api/profile?purge=1", { method: "DELETE" });
+    ok(del.ok, "smoke shield deleted and purged");
+
+    // Guided demo: one call, sample shield + two portraits + the sample morph checked.
+    cookie = "";
+    const t1 = Date.now();
+    const g = await call("/api/demo/start", { method: "POST" });
+    const gb = (await g.json()) as { caseId?: string; verdict?: string; score?: number; error?: string };
+    ok(g.ok && gb.caseId, `guided demo verdict=${gb.verdict} score=${gb.score?.toFixed(3)} in ${((Date.now() - t1) / 1000).toFixed(1)}s ${gb.error ?? ""}`);
+    const v = (await (await call("/api/vault")).json()) as { photos: { publicId: string; faces: number }[] };
+    const first = v.photos.find((p) => p.faces > 0) ?? v.photos[0];
+    const t2 = Date.now();
+    const sim = await call("/api/vault/simulate", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ publicId: first.publicId }) });
+    const sb = (await sim.json()) as { results?: { kind: string; verdict?: string; score?: number }[]; error?: string };
+    const caught = sb.results?.filter((r) => r.verdict === "derived").length ?? 0;
+    ok(sim.ok && sb.results?.length === 6, `simulator ${caught}/6 caught in ${((Date.now() - t2) / 1000).toFixed(1)}s ${sb.error ?? ""}`);
+    const del2 = await call("/api/profile?purge=1", { method: "DELETE" });
+    ok(del2.ok, "sample shield deleted and purged");
   }
 
   console.log(`done in ${((Date.now() - t0) / 1000).toFixed(1)}s`);
