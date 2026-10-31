@@ -1,184 +1,199 @@
-# Kavach: Hacktober HackDays 2026
-
-Built by team yearners during Hacktober HackDays (SheBuilds Delhi, powered by MLH). Theme: Women Empowerment, Tech for Good.
+> **Status: Shipped and submitted.** Live at https://kavach-flame-gamma.vercel.app · Demo video https://youtu.be/p4adFXAz8tk · Repo https://github.com/ShivamShrivastava18/kavach · Finale 31 Oct 2026, PW IOI Noida · Team yearners (Shivam Shrivastava, Paavas) · Theme: Women Empowerment
 
 ## 1. Project Overview
 
-- Project name: Kavach (Hindi for armour; "a photo shield for women")
-- Team name: yearners
-- Track / theme: Women Empowerment (Tech for Good)
-- One-line pitch: Proves a morphed image was made from her own photo, blurs it so she never has to look at it, and writes the complaint a platform must act on within 2 hours.
-- Repository: https://github.com/ShivamShrivastava18/kavach
-- Live demo: https://kavach-flame-gamma.vercel.app
-- Demo video: https://youtu.be/p4adFXAz8tk
-- Presentation / slides: the demo video doubles as the pitch; the README carries the technical write-up.
+| Field | Details |
+| --- | --- |
+| Project name | Kavach (Hindi for armour; a photo shield for women) |
+| Team name | yearners |
+| Track / theme | Women Empowerment (Tech for Good) |
+| One-line pitch | Proves a morphed image was made from her own photo, blurs it so she never has to look at it, and writes the complaint a platform must act on within 2 hours. |
+| Repository | https://github.com/ShivamShrivastava18/kavach |
+| Live demo | https://kavach-flame-gamma.vercel.app |
+| Demo video | https://youtu.be/p4adFXAz8tk |
+| Presentation | The demo video is the pitch; the README carries the technical write-up. |
 
 ## 2. Team Members and Roles
 
-- Shivam Shrivastava: Backend and execution, ideation. Cloudinary integration, fingerprinting and matching, Gemma 4 drafting pipeline, deployment, testing, demo video. GitHub: ShivamShrivastava18.
-- Paavas: UI/UX and frontend, ideation. Product flow, visual design, the vault, check and case pages, responsive layout, copy.
+| Name | Role | Responsibilities | Contact |
+| --- | --- | --- | --- |
+| Shivam Shrivastava | Backend, execution, ideation | Cloudinary integration, fingerprinting and matching, Gemma 4 drafting, deployment, testing, demo video | github.com/ShivamShrivastava18 |
+| Paavas | UI/UX, frontend, ideation | Product flow, visual design, vault, check and case pages, responsive layout, copy | via Unstop team |
 
 ## 3. Problem Statement
 
-- The problem: A woman's photo is taken from her own profile, morphed into something she never posed for, and shared. Within hours it is on several platforms. She has to prove it is fake, find the right complaint channel, cite the right law, and look at the image again and again while doing it.
-- Who is affected: Women in India whose photos are public anywhere: students, creators, professionals. Morphed and deepfaked imagery is overwhelmingly aimed at women.
-- Why it matters: Since 20 February 2026, Rule 3(2)(b) of India's IT Rules obliges platforms to remove non-consensual morphed or intimate imagery within 2 hours of a complaint. The duty exists; the burden of producing a credible complaint on the day still falls on the victim.
-- Existing solutions and their gaps: Reverse image search finds copies but does not prove derivation from a specific original. Platform report buttons produce no evidence record and no cross-platform complaint. Hash-matching takedown services (StopNCII-style) cover intimate images already in circulation, not morphs of ordinary photos, and give the victim no document to file with police.
+| | |
+| --- | --- |
+| The problem | A woman's photo is taken from her profile, morphed, and shared. Within hours it is on several platforms. She must prove it is fake, find the right channel, cite the right law, and look at the image again and again to do it. |
+| Who is affected | Women in India whose photos are public anywhere: students, creators, professionals. |
+| Why it matters | Since 20 Feb 2026, Rule 3(2)(b) of the IT Rules obliges platforms to remove non-consensual morphed or intimate imagery within 2 hours of a complaint. The duty exists; the burden of producing a credible complaint still falls on the victim. |
+| Existing gaps | Reverse image search finds copies but does not prove derivation. Platform report buttons leave no evidence record. Hash-matching takedown services cover intimate images already circulating, not morphs of ordinary photos, and give her nothing to file with police. |
 
 ## 4. Proposed Solution
 
-- Overview: Kavach lets a woman register the photos she actually posts, privately, fingerprinted on upload. When a morph appears she drops it in once. Kavach proves it was derived from a registered photo, shows it back only blurred and stamped, and produces two complaints and an evidence bundle.
-- Unique value: Derivation proof rather than detection. Kavach never claims an image is "AI-generated"; it measures that the suspect image was made from her photo, with the method and score on record, and the legal text is templated so it never depends on a model.
-- Key features:
-  - Private vault on Cloudinary: perceptual hash and face box on upload, plus two 256-bit fingerprints of the face crop.
-  - Check: fingerprint, compare against every registered photo including a mirrored pass, verdict with score and methods.
-  - Blurred, pixelated, stamped exhibit (case id, SHA-256, time). The original is never served.
-  - Gemma 4 writes her plain-language account and a severity; the platform complaint and the cybercrime.gov.in report are templated around it.
-  - Evidence bundle (evidence.json, stamped exhibit, both complaints) and a 10-minute police-only link to the original.
-  - Explicit-content screening via Amazon Rekognition switches the complaint to the intimate-imagery sections.
-- Out of scope (for now): Face recognition or identity matching (a deepfake generated from a photo that was never registered will not match, and the verdict says so). Filing complaints automatically. Mobile app.
+| | |
+| --- | --- |
+| Overview | Register the photos she posts, privately, fingerprinted on upload. When a morph appears, drop it in once: Kavach proves derivation, shows it back only blurred and stamped, and produces two complaints and an evidence bundle. |
+| Unique value | Derivation proof, not "AI detection". Kavach never claims an image is AI-generated; it measures that the suspect image was made from her photo, and the legal text is templated so it never depends on a model. |
+| Out of scope | Face recognition or identity matching; filing complaints automatically; mobile app. |
+
+**Key features**
+
+| Feature | What it does |
+| --- | --- |
+| Private vault | Cloudinary private asset per photo; pHash and face box on upload; two 256-bit fingerprints of the face crop |
+| Check | Fingerprint the suspect, compare with every registered photo including a mirrored pass; verdict with score and methods |
+| Blurred exhibit | Pixelated faces, blur, evidence stamp (case id, SHA-256, time). The original is never served |
+| Gemma 4 drafts | Plain-language account and severity; platform complaint and cybercrime.gov.in report templated around it |
+| Evidence bundle | evidence.json, stamped exhibit, both complaints; 10-minute police-only link to the original |
+| Explicit screening | Amazon Rekognition via Cloudinary switches the complaint to the intimate-imagery sections |
+| Guided demo | One click opens a sample shield, registers two portraits, checks a morph, lands on the case |
+| Morph simulator | Kavach makes six harasser edits of a registered photo and checks each one |
 
 ## 5. Tech Stack and Architecture
 
-- Frontend: Next.js 16 (App Router), React 19, TypeScript, Tailwind v4. Chosen for speed of iteration and server routes in the same codebase.
-- Backend: Next.js route handlers on Vercel. No separate server.
-- Database: None. Profiles and cases are private raw JSON assets on Cloudinary, read through signed private download URLs.
-- APIs / services: Cloudinary (private uploads, pHash, face detection, quality analysis, Rekognition moderation, signed derivatives), Google GenAI SDK for Gemma 4 (gemma-4-26b-a4b-it, free tier).
-- Hosting / deployment: Vercel.
-- Tools: sharp (image processing), vitest (59 tests), Playwright (screen recording), Remotion (demo video), GitHub.
-- Architecture overview: Browser uploads go to Next.js route handlers, which store the file as a private Cloudinary asset and read back the pHash and face box from the upload response. The handler crops the face locally with sharp (20 percent padding, edge replication), computes 256-bit pHash and dHash, and stores the prints in the profile JSON. A check uploads the suspect privately, computes the same prints, scores against every registered photo (face hashes carry the score; the full-image hash can only raise it; a mirrored pass runs too) and writes a case JSON. The exhibit is only ever served through a signed Cloudinary transformation that pixelates faces, blurs, and overlays the evidence stamp. Drafting sends the blurred exhibit and redacted evidence to Gemma 4; the narrative comes back and is inserted into templated complaints.
-- Data flow: photo -> private asset + prints in profile.json -> suspect -> private asset + prints -> score -> case.json -> blurred derivative (signed URL via server proxy) -> Gemma narrative -> templated complaints -> zip bundle.
+| Layer | Choice | Why |
+| --- | --- | --- |
+| Frontend | Next.js 16, React 19, TypeScript, Tailwind v4 | Server routes and UI in one codebase |
+| Backend | Next.js route handlers on Vercel | No separate server |
+| Storage | Cloudinary only: private images, raw JSON records | No database; free tier |
+| Media | Cloudinary pHash, face detection, quality analysis, Rekognition moderation, signed transformations | The entire evidence pipeline |
+| Model | Gemma 4 (gemma-4-26b-a4b-it) via Google GenAI SDK, free tier | Thinking set to minimal: 4 s answers |
+| Image processing | sharp | Face crops, hashing, EXIF |
+| Testing | vitest (64 tests), end-to-end smoke against production, real-portrait benchmark, Playwright | |
+| Video | Playwright recording, Remotion, Gemini TTS | |
+
+**Data flow:** photo → private asset + prints in profile.json → suspect → private asset + prints → score → case.json → blurred derivative via server proxy → Gemma narrative → templated complaints → zip bundle.
 
 ## 6. Feature Tracker
 
-- Private vault with fingerprinting (Shivam, High): Done
-- Check and verdict with mirrored pass (Shivam, High): Done
-- Blurred stamped exhibit via Cloudinary transformations (Shivam, High): Done
-- Gemma 4 narrative with templated complaints (Shivam, High): Done
-- Vault, check and case pages, responsive (Paavas, High): Done
-- Evidence bundle and police-only original link (Shivam, Medium): Done
-- Explicit-content screening (Shivam, Medium): Done, degrades gracefully when the add-on quota is spent
-- Real-portrait benchmark and calibration (Shivam, Medium): Done
-- Demo mode without keys (Shivam, Low): Done
-- Demo video (Shivam, Low): Done
+| Feature | Owner | Priority | Status |
+| --- | --- | --- | --- |
+| Private vault with fingerprinting | Shivam | High | Done |
+| Check and verdict with mirrored pass | Shivam | High | Done |
+| Blurred stamped exhibit | Shivam | High | Done |
+| Gemma 4 narrative, templated complaints | Shivam | High | Done |
+| Vault, check, case pages, responsive | Paavas | High | Done |
+| Evidence bundle, police-only original link | Shivam | Medium | Done |
+| Explicit-content screening with graceful quota fallback | Shivam | Medium | Done |
+| Real-portrait benchmark and calibration | Shivam | Medium | Done |
+| Demo mode without keys | Shivam | Low | Done |
+| Demo video | Shivam | Low | Done |
+| Guided demo and morph simulator (finale) | Shivam, Paavas | High | Done |
+| Score gauge, scan animation, action cards (finale) | Paavas, Shivam | Medium | Done |
 
-## 7. Progress Tracker (7 days)
+## 7. Progress Tracker
 
-- Day 1, 19 Oct: Team formation, theme choice (Women Empowerment), first brainstorm. Done
-- Day 2, 20 Oct: Problem validation and research: IT Rules amendment, cybercrime.gov.in flow, how morphs spread. Done
-- Day 3, 21 Oct: Scope and plan: derivation proof, blur-first, two complaints. Design direction. Done
-- Day 4, 22 Oct: UI/UX: flows and screens for vault, check and case. Done
-- Day 5, 23 Oct: Build: scaffold, Cloudinary private uploads, fingerprints, matching, pages, demo mode. Done
-- Day 6, 24 Oct: Build and calibrate: real-portrait benchmark, 256-bit hashes, Gemma 4 drafting, evidence bundle, deploy. Done
-- Day 7, 25 Oct: Deliver: moderation quota fix, demo video, documentation, submission. Done
+| Day | Date | Phase | Focus | Status |
+| --- | --- | --- | --- | --- |
+| 1 | 19 Oct | Ideate | Team, theme, problem shortlist | Done |
+| 2 | 20 Oct | Ideate | Legal research: IT Rules, IT Act, BNS, cybercrime.gov.in | Done |
+| 3 | 21 Oct | Ideate | Scope, plan, visual direction, Cloudinary as the backend | Done |
+| 4 | 22 Oct | Build | UI/UX: flows and screens | Done |
+| 5 | 23 Oct | Build | Scaffold, uploads, fingerprints, matching, pages, demo mode | Done |
+| 6 | 24 Oct | Build | Live keys, real-portrait calibration, Gemma 4, deploy | Done |
+| 7 | 25 Oct | Deliver | Moderation quota fix, demo video, docs, submission | Done |
+| Finale | 31 Oct | Deliver | Guided demo, simulator, gauge and scan, judges' path | Done |
 
 ## 8. Daily Log
 
-### Day 1 (19 Oct)
-- Goals for today: Form the team, pick a theme, list problems worth a week.
-- What we completed: Chose Women Empowerment. Shortlisted three problems; morphed-image takedowns won because the law had just changed and the victim's burden is concrete.
-- Blockers / challenges: Avoiding a generic "deepfake detector" that cannot be proven right.
-- Learnings: Detection claims are fragile; derivation from a known original is provable.
-- Plan for tomorrow: Validate the legal duty and the complaint channels.
-
-### Day 2 (20 Oct)
-- Goals for today: Verify the 2-hour rule, map the complaint process.
-- What we completed: Confirmed Rule 3(2)(b) of the IT Rules (amendment notified 10 Feb 2026, in force 20 Feb 2026), IT Act 66E/67/67A and BNS 77/351/356. Read the cybercrime.gov.in category structure and helpline 1930.
-- Blockers / challenges: Section numbers differ between IPC and BNS; every citation needed a source.
-- Learnings: Templating the legal text, rather than generating it, is the only way to keep it correct.
-- Plan for tomorrow: Lock scope.
-
-### Day 3 (21 Oct)
-- Goals for today: Scope, plan, visual direction.
-- What we completed: Three steps (register, check, file), blur-first rule, two complaints. Dark, calm visual direction with one amber accent. Decided Cloudinary is the entire backend: private assets, hashing, face boxes, moderation, derivatives, and JSON storage.
-- Blockers / challenges: Whether to use a database at all. Decided no: raw JSON on Cloudinary keeps the stack to free tiers.
-- Learnings: Fewer moving parts means more time for calibration.
-- Plan for tomorrow: Screens.
-
-### Day 4 (22 Oct)
-- Goals for today: UI/UX for every screen.
-- What we completed: Vault (create shield, register photos), check (drop, platform, link), case (verdict, blurred exhibit, drafts, bundle). Copy written in plain language, no hype.
-- Blockers / challenges: Showing a blurred exhibit without ever rendering the original on the client.
-- Learnings: Serve images only through a server proxy with short-lived signed tokens.
-- Plan for tomorrow: Build.
-
-### Day 5 (23 Oct)
-- Goals for today: Working end to end in demo mode.
-- What we completed: Next.js scaffold, Cloudinary private uploads with pHash, faces and quality analysis, own pHash and dHash, matching with a mirrored pass, session cookies with hashed PIN, all three pages, demo mode with generated vector portraits, 47 tests.
-- Blockers / challenges: Tailwind v4 silently dropped the stylesheet when a class used @apply inside another class; sharp applies only the last resize in a chain.
-- Learnings: Test images need texture: a flat-colour image makes hash bits noise-dominated.
-- Plan for tomorrow: Live keys, real photos, Gemma.
-
-### Day 6 (24 Oct)
-- Goals for today: Run on live keys and prove it on real photos.
-- What we completed: Live Cloudinary path, deploy to Vercel. Wrote a real-portrait benchmark (recompress, thumbnail, mirror, crop, tilt, filters, caption, chat screenshot, face pasted onto another body, five other people as controls). First run was humbling: a stranger scored "likely" and the body-swap was missed. Fixed three causes: the padded face crop was clamped at image edges (now edge-replicated), the body-swap test cut the chin off, and 64-bit hashes of different faces agree on 70 to 75 percent of bits. Moved to 256-bit hashes, let the face hashes carry the score, moved "likely" to 0.70. Result: 12 of 12 edits derived, 5 of 5 strangers none. Gemma 4 wired in.
-- Blockers / challenges: Gemma 4 thinks for 25 to 60 seconds on our prompt, past the API's deadline, and its image path returns opaque 500s now and then.
-- Learnings: Give the model only what a model should write (the narrative), template the rest, race image and text-only lanes, set thinkingLevel to minimal (4 seconds).
-- Plan for tomorrow: Video, docs, submit.
-
-### Day 7 (25 Oct, Submission Day)
-- Goals for today: Demo video, documentation, submission.
-- What we completed: New Cloudinary account with a fresh moderation quota (the benchmark had spent the first one; the app now degrades gracefully and says "not screened for explicit content"). GitHub push protection caught a tracked .env before it was ever pushed; fixed. Demo video: Playwright recorded the production flow, Remotion composition in the app's own fonts and colours, narration via Gemini TTS after the ElevenLabs free tier ran out. Notion documentation and Unstop submission.
-- Blockers / challenges: Free-tier limits everywhere: 10 TTS requests a day per model, 3 a minute; TTS models read style instructions aloud.
-- Learnings: Ship with a fallback for every external call and show the user which path was taken.
-- Final reflections: Seven days took a vague worry ("morphs are easy") to a tool with a provable claim, a legal basis, and a live URL. The calibration day mattered more than any feature.
+| Day | Goals | Completed | Blockers | Learnings | Next |
+| --- | --- | --- | --- | --- | --- |
+| 1 (19 Oct) | Form the team, pick a theme | Chose Women Empowerment; morphed-image takedowns won the shortlist because the law had just changed | Avoiding a generic "deepfake detector" | Detection claims are fragile; derivation from a known original is provable | Validate the legal duty |
+| 2 (20 Oct) | Verify the 2-hour rule, map complaint channels | Confirmed Rule 3(2)(b) (notified 10 Feb, in force 20 Feb 2026), IT Act 66E/67/67A, BNS 77/351/356; portal categories; helpline 1930 | IPC vs BNS section numbers | Template the legal text, never generate it | Lock scope |
+| 3 (21 Oct) | Scope, plan, visual direction | Register, check, file; blur-first rule; two complaints; dark with one amber accent; Cloudinary as the whole backend | Database or not | No database keeps everything on free tiers | Screens |
+| 4 (22 Oct) | UI/UX for every screen | Vault, check, case; plain copy | Showing a blurred exhibit without the original ever reaching the client | Serve images only through a server proxy with signed short-lived tokens | Build |
+| 5 (23 Oct) | Working end to end in demo mode | Scaffold, private uploads with pHash and faces, own hashes, mirrored pass, PIN sessions, all pages, demo seed, 47 tests | Tailwind v4 dropped the stylesheet on nested @apply; sharp keeps only the last resize | Test images need texture | Live keys, real photos, Gemma |
+| 6 (24 Oct) | Prove it on real photos | Real-portrait benchmark; first run let a stranger through at "likely"; fixed edge-clamped crops, moved to 256-bit hashes, face-first score; 12/12 edits caught, 5/5 strangers none; Gemma 4 wired | Gemma thinks 25 to 60 s; image path 500s | Model writes only the narrative; race image and text lanes; thinking minimal | Video, docs, submit |
+| 7 (25 Oct) | Video, docs, submission | New Cloudinary account; .env caught by push protection before any push; Playwright footage, Remotion, Gemini TTS narration; Notion and Unstop | Free-tier limits everywhere | Ship a fallback for every external call and show which path ran | Finale prep |
+| Finale (31 Oct) | The judge's path | Guided demo (one click to a solved case), six-edit simulator, real purge, score gauge, X-ray scan, three action cards, complaint explainers; A/B on the hero with a judge persona | Stage morph (a full Gemini re-render) scores "likely" | Edits are caught; full regenerations are "likely" at best, and Kavach says so | Present |
 
 ## 9. Challenges and Solutions
 
-- Different faces hash alike at 64 bits (Day 6): compared 8x8, 12x12 and 16x16 DCT bands offline against recorded face boxes; 256-bit hashes put strangers at 0.55 to 0.61 and the same face after any edit at 0.83 or more. Lesson: calibrate on real data before trusting thresholds.
-- Face crop clamped at image edges (Day 6): extend the image with replicated edge pixels before cropping, in two sharp pipelines. Lesson: the same face must be framed identically regardless of where it sits.
-- Gemma 4 too slow and flaky with images (Day 6): narrative-only output, racing lanes, thinkingLevel minimal, template fallback with a visible badge. Lesson: keep the model's job small and verifiable.
-- Moderation add-on quota spent (Day 7): store unmoderated, mark the case as not screened, record it in the evidence bundle. Lesson: a quota must never block a victim.
-- Secrets nearly committed (Day 7): .env was never in .gitignore; GitHub push protection caught it, history rewritten before anything was pushed. Lesson: check tracked files before the first push.
+| Challenge | Day | Solution | Lesson |
+| --- | --- | --- | --- |
+| Different faces hash alike at 64 bits | 6 | Compared 8x8, 12x12, 16x16 DCT bands offline; 256-bit puts strangers at 0.55 to 0.61 and real edits at 0.83+ | Calibrate on real data before trusting thresholds |
+| Face crop clamped at image edges | 6 | Extend with replicated edge pixels before cropping | Frame the same face identically wherever it sits |
+| Gemma 4 slow and flaky with images | 6 | Narrative-only output, racing lanes, thinkingLevel minimal, template fallback with a badge | Keep the model's job small and verifiable |
+| Moderation quota spent | 7 | Store unmoderated, mark the case, record it in the bundle | A quota must never block a victim |
+| Secrets nearly committed | 7 | Push protection caught it; history rewritten before any push | Check tracked files before the first push |
+| Judges land cold on production | Finale | Guided demo, simulator, guide strip, delete-in-one-click | Make the first result one click away |
 
 ## 10. Testing and Setup Notes
 
-- How to run locally:
-  1. git clone https://github.com/ShivamShrivastava18/kavach and cd kavach
-  2. npm install
-  3. Copy .env.example to .env and set CLOUDINARY_URL, GEMINI_API_KEY, SESSION_SECRET (optional: CLOUDINARY_MODERATION=1 with the Rekognition add-on enabled). Without keys the app runs in demo mode.
-  4. npm run dev, then open http://localhost:3000
-- Testing approach: 59 vitest unit tests (fingerprints, matching, templates, redaction, parsing, validation, moderation, Gemma retry policy); end-to-end smoke script against local or production (scripts/smoke.ts); real-portrait benchmark (scripts/morph-bench.ts); Playwright screenshots at desktop and phone widths; a fresh-context code review before the first deploy.
-- Known issues: No face recognition, so a morph made from an unregistered photo reads as "no match". PIN attempts are not rate limited. A page reload while a draft is in progress starts a second Gemma call.
-- Test accounts / sample data: Demo mode seeds the profile "Priya Sharma" with generated vector portraits; no real person's photo is used anywhere.
+| | |
+| --- | --- |
+| Run locally | `git clone https://github.com/ShivamShrivastava18/kavach`, `npm install`, copy `.env.example` to `.env` (CLOUDINARY_URL, GEMINI_API_KEY, SESSION_SECRET; optional CLOUDINARY_MODERATION=1), `npm run dev`. Without keys the app runs in demo mode. |
+| Testing | 64 vitest unit tests; `scripts/smoke.ts` end to end against local or production (includes the guided demo and the simulator); `scripts/morph-bench.ts` on real portraits; Playwright screenshots at desktop and phone widths; fresh-context code review before the first deploy |
+| Known issues | No face recognition (a morph from an unregistered photo reads "no match"); PIN attempts not rate limited; reload during drafting starts a second Gemma call |
+| Sample data | Demo seeds "Priya Sharma" with generated vector portraits; no real person's photo anywhere |
 
 ## 11. Final Submission Checklist
 
-- Project name, pitch, and team details are filled in: yes
-- Problem statement and solution are clearly explained: yes
-- Repository is public and has a clear README: yes
-- Code is clean, commented, and contains no secrets or API keys: yes (push protection verified)
-- Live demo link works: yes, smoke-tested against production
-- Demo video is recorded and the link is accessible: yes
-- Presentation / pitch deck is ready: the demo video serves as the pitch
-- Daily log is updated: yes, 7 days
-- Screenshots or GIFs of the project are added below: see section 12
-- Notion page is shared with the organizers: yes
-- Submission form is filled before the deadline: yes
+- [x] Project name, pitch and team details filled in
+- [x] Problem statement and solution clearly explained
+- [x] Repository public with a clear README
+- [x] No secrets or API keys in the code (push protection verified)
+- [x] Live demo link works, smoke-tested against production
+- [x] Demo video recorded and accessible
+- [x] Pitch ready (the demo video)
+- [x] Daily log updated
+- [x] Screenshots and demo media added (section 12)
+- [x] Notion page shared with the organizers
+- [x] Submission form filled before the deadline
 
 ## 12. Screenshots and Demo Media
 
-- Demo video: https://youtu.be/p4adFXAz8tk
-- Home, vault, check and case pages: screenshots in the repository README.
+Demo video: https://youtu.be/p4adFXAz8tk · Live: https://kavach-flame-gamma.vercel.app
+
+**Home: one click to a solved case**
+
+![Home: one click to a solved case](https://raw.githubusercontent.com/ShivamShrivastava18/kavach/main/docs/screenshots/01-home.png)
+
+**The scan while the sample shield is built**
+
+![The scan while the sample shield is built](https://raw.githubusercontent.com/ShivamShrivastava18/kavach/main/docs/screenshots/02-home-scanning.png)
+
+**The verdict: dial, band marks, one bar per fingerprint**
+
+![The verdict: dial, band marks, one bar per fingerprint](https://raw.githubusercontent.com/ShivamShrivastava18/kavach/main/docs/screenshots/03-case-verdict.png)
+
+**Three things to do, and why each exists**
+
+![Three things to do, and why each exists](https://raw.githubusercontent.com/ShivamShrivastava18/kavach/main/docs/screenshots/04-case-actions-complaints.png)
+
+**What a harasser would do: six edits, six caught**
+
+![What a harasser would do: six edits, six caught](https://raw.githubusercontent.com/ShivamShrivastava18/kavach/main/docs/screenshots/06-vault-simulator-results.png)
+
+**Checking: she never sees the morph unblurred**
+
+![Checking: she never sees the morph unblurred](https://raw.githubusercontent.com/ShivamShrivastava18/kavach/main/docs/screenshots/07-check-scanning.png)
+
+**Phone**
+
+![Phone](https://raw.githubusercontent.com/ShivamShrivastava18/kavach/main/docs/screenshots/08-home-phone.png)
 
 ## 13. Future Scope
 
-- Face-identity matching (a face embedding model) so a deepfake generated from an unregistered photo still finds her vault.
-- Direct filing: pre-filled cybercrime.gov.in submission and platform grievance e-mails with the bundle attached.
-- Multiple complainants per case, a case timeline, and a takedown-confirmation tracker against the 2-hour clock.
-- Hindi and regional-language complaints.
-- A browser extension that checks an image where it is seen.
+| Idea | Why |
+| --- | --- |
+| Face-identity matching (embeddings) | Catch a deepfake generated from an unregistered photo |
+| Direct filing | Pre-filled cybercrime.gov.in submission and grievance e-mails with the bundle attached |
+| Takedown tracker | Case timeline against the 2-hour clock |
+| Hindi and regional-language complaints | Reach beyond English-speaking users |
+| Browser extension | Check an image where it is seen |
 
 ## 14. Resources and References
 
-- IT (Intermediary Guidelines and Digital Media Ethics Code) Amendment Rules, 2026 (MeitY gazette, 10 Feb 2026): legal basis for the 2-hour duty.
-- Cloudinary documentation (private assets, pHash, face detection, moderation add-ons, transformations): the backend.
-- Gemini API documentation (Gemma 4 models, thinking config): the drafting model.
-- pHash / dHash literature (DCT perceptual hashing): the fingerprints.
-- Remotion and Playwright documentation: the demo video.
+| Resource | Used for |
+| --- | --- |
+| IT (Intermediary Guidelines) Amendment Rules, 2026, MeitY gazette 10 Feb 2026 | The 2-hour duty |
+| Cloudinary docs: private assets, pHash, face detection, moderation add-ons, transformations | The backend |
+| Gemini API docs: Gemma 4 models, thinking config | The drafting model |
+| DCT perceptual hashing literature | The fingerprints |
+| Remotion and Playwright docs | The demo video |
 
 ## 15. Acknowledgments
 
-SheBuilds Delhi, MLH and PW IOI for Hacktober HackDays; Cloudinary for the free tier and the add-ons; the Mixkit library for the sound effects in the demo video.
-
-Built during Hacktober Hack Days.
+SheBuilds Delhi, MLH and PW IOI for Hacktober HackDays; Cloudinary for the free tier and add-ons; Mixkit for the sound effects in the demo video.

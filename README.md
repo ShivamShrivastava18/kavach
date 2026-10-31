@@ -6,6 +6,21 @@ Live: https://kavach-flame-gamma.vercel.app · Demo video: https://youtu.be/p4ad
 
 Built in one night for SheBuilds Hacktoberfest HackDays 2026. Cloudinary does the heavy lifting. Gemma 4 writes the complaints. The fingerprinting is open source and lives in this repo.
 
+## Screens
+
+![Home: one click to a solved case](docs/screenshots/01-home.png)
+
+![The scan while the sample shield is built](docs/screenshots/02-home-scanning.png)
+
+![The verdict: dial, band marks, one bar per fingerprint](docs/screenshots/03-case-verdict.png)
+
+![Three things to do, and why each exists](docs/screenshots/04-case-actions-complaints.png)
+
+![What a harasser would do: six edits, six caught](docs/screenshots/06-vault-simulator-results.png)
+
+![Checking: she never sees the morph unblurred](docs/screenshots/07-check-scanning.png)
+
+
 ## Try it in 60 seconds
 
 On the home page, **See it in 60 seconds** opens a throwaway sample shield: two generated portraits registered, a sample morph checked, proven, blurred, and the complaint written by Gemma 4. Nothing of yours is uploaded. From there, **Try it on your own photo** lets you register a real photo, and **Simulate six edits** asks Kavach to make the edits a harasser makes (mirror, crop to the face, colour filter, abusive caption, screenshot of a chat, WhatsApp recompression) through Cloudinary transformations and run each one through the normal check. Every edit becomes a real case. **Delete this sample** removes the shield and every asset and record it owns.
